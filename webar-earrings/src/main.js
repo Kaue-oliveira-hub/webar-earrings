@@ -61,11 +61,25 @@ document.querySelector("#app").innerHTML = `
             playsinline
           ></video>
 
+            <canvas
+            id="capture-canvas"
+            class="camera-view__canvas"
+          ></canvas>
+          <div
+            id="camera-guide"
+            class="camera-view__guide"
+            aria-hidden="true"
+            >
+            <div class="face-guide">
+              <span class="face-guide__ear"></span>
+            </div>
+          </div>
+
           <div
             id="camera-placeholder"
             class="camera-view__placeholder"
           >
-            <p>La cámara todavía no está activa.</p>
+            <p>Activa la cámara para comenzar </p>
           </div>
         </div>
 
@@ -87,6 +101,22 @@ document.querySelector("#app").innerHTML = `
           </button>
 
           <button
+            id="capture-photo-button"
+            class="button button--primary is-hidden"
+            type="button"
+            >
+            Hacer foto
+          </button>
+
+          <button
+            id="retake-photo-button"
+            class="button button--primary is-hidden"
+            type="button"
+            >
+            Repetir foto
+          </button>
+
+          <button
             id="cancel-camera-button"
             class="button button--secondary"
             type="button"
@@ -104,12 +134,20 @@ const closeCameraButton = document.querySelector("#close-camera-button");
 const cancelCameraButton = document.querySelector("#cancel-camera-button");
 const startCameraButton = document.querySelector("#start-camera-button");
 
+const capturePhotoButton = document.querySelector("#capture-photo-button");
+const retakePhotoButton = document.querySelector("#retake-photo-button");
+
 const cameraModal = document.querySelector("#camera-modal");
 const cameraStatus = document.querySelector("#camera-status");
 const cameraVideo = document.querySelector("#camera-video");
 const cameraPlaceholder = document.querySelector("#camera-placeholder");
 
 const cameraController = new CameraController(cameraVideo);
+
+const cameraView = document.querySelector(".camera-view");
+const cameraGuide = document.querySelector("#camera-guide");
+const captureCanvas = document.querySelector("#capture-canvas");
+const captureContext = captureCanvas.getContext("2d");
 
 
 function setCameraStatus(message, state = "default") {
@@ -123,6 +161,36 @@ function hideCameraPlaceholder() {
   cameraPlaceholder.classList.add("is-hidden");
 }
 
+function showLiveCameraState() {
+  cameraView.classList.remove("has-capture");
+  captureCanvas.classList.remove("is-visible");
+  cameraGuide.classList.add("is-visible");
+
+  startCameraButton.classList.add("is-hidden");
+  capturePhotoButton.classList.remove("is-hidden");
+  retakePhotoButton.classList.add("is-hidden");
+}
+
+function showCapturePhotoState() {
+  cameraView.classList.add("has-capture");
+  captureCanvas.classList.add("is-visible");
+  cameraGuide.classList.remove("is-visible");
+
+  startCameraButton.classList.add("is-hidden");
+  capturePhotoButton.classList.add("is-hidden");
+  retakePhotoButton.classList.remove("is-hidden");
+}
+
+function resetCaptureState() {
+cameraView.classList.remove("has-capture");
+  captureCanvas.classList.remove("is-visible");
+  cameraGuide.classList.remove("is-visible");
+
+startCameraButton.classList.remove("is-hidden");
+  capturePhotoButton.classList.add("is-hidden");
+  retakePhotoButton.classList.add("is-hidden");
+
+}
 
 function openCameraModal() {
   cameraModal.classList.add("is-open");
@@ -136,6 +204,7 @@ document.body.classList.add("modal-open");
 function closeCameraModal() {
   cameraController.stop();
   showCameraPlaceholder();
+  resetCaptureState();
 
   startCameraButton.disabled = false;
   startCameraButton.textContent = "Activar cámara";
@@ -157,9 +226,10 @@ async function startCamera() {
     await cameraController.start();
 
     hideCameraPlaceholder();
+    showLiveCameraState();
 
     startCameraButton.textContent = "Cámara activa";
-    setCameraStatus("Cámara activa.", "success");
+    setCameraStatus("Coloca tu rostro dentro de la guía y busca buena iluminación.", "success");
   } catch (error) {
     console.error(error);
 
@@ -195,6 +265,35 @@ async function startCamera() {
 }
 
 
+function capturePhoto() {
+  if (!cameraController.isActive) {
+    setCameraStatus("Activar la cámara antes de hacer la foto.", "error");
+    return;
+}
+  const videoWidth = cameraVideo.videoWidth;
+  const videoHeight = cameraVideo.videoHeight;
+
+  if (!videoWidth || !videoHeight) {
+    setCameraStatus("La cámara todavia no está lista. Intenta de nuevo.", "error");
+    return;
+  }
+
+  captureCanvas.width = videoWidth;
+  captureCanvas.height = videoHeight;
+
+  captureContext.save();
+
+  captureContext.translate(videoWidth, 0);
+  captureContext.scale(-1, 1);
+
+  captureContext.drawImage(cameraVideo, 0, 0, videoWidth, videoHeight);
+
+  captureContext.restore();
+  
+  showCapturePhotoState();
+  
+  setCameraStatus("Foto capturada. Ahora podríamos colocar el pendiente sobre esta imagen.", "success");
+}
 
 openCameraButton.addEventListener("click", () => {
   openCameraModal();
@@ -202,6 +301,14 @@ openCameraButton.addEventListener("click", () => {
 
 startCameraButton.addEventListener("click", () => {
   startCamera();
+});
+
+capturePhotoButton.addEventListener("click", () => {
+  capturePhoto();
+});
+
+retakePhotoButton.addEventListener("click", () => {
+  retakePhoto();
 });
 
 closeCameraButton.addEventListener("click", () => {
@@ -217,6 +324,27 @@ cameraModal.addEventListener("click", (event) => {
     closeCameraModal();
   }
   });
+
+
+function retakePhoto() {
+  if (!cameraController.isActive){
+    resetCaptureState();
+    showCameraPlaceholder();
+    setCameraStatus("");
+    return;
+  }
+
+  captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
+
+  hideCameraPlaceholder();
+  showLiveCameraState();
+  setCameraStatus("Coloca tu rostro dentro de la guía y busca buena iluminación.", "success",
+
+  );
+}
+
+
+
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && cameraModal.classList.contains("is-open")) {

@@ -215,6 +215,56 @@ h2 {
   transform: scaleX(-1);
 }
 
+.camera-view__canvas{
+  display:none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-view__canvas.is-visible{
+  display:block;
+}
+.camera-view.has-capture .camera-view__video{
+  display:none;
+}
+
+.camera-view__guide{
+  position:absolute;
+  inset:0;
+  display:none;
+  place-items:center;
+  pointer-events:none;
+}
+
+.camera-view__guide.is-visible{
+  display:grid;
+}
+
+.face-guide{
+  position:relative;
+  width: min(52%, 220px);
+  aspect-ratio: 0.68;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-radius: 48% 42% 46% 44%;
+  transform: rotate(-14deg);
+  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.12);
+}
+.face-guide__ear {
+  position: absolute;
+  top: 44%;
+  right: -18px;
+  width: 24px;
+  height: 44px;
+  border: 2px solid rgba(255, 255, 255, 0.86);
+  border-left: 0;
+  border-radius: 0 999px 999px 0;
+}
+
+.is-hidden{
+  display:none !important;
+}
+
 .camera-view__placeholder {
   position: absolute;
   inset: 0;
