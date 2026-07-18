@@ -11,7 +11,28 @@ export class CameraController {
   }
 
   async start() {
-    throw new Error("El método start() todavía no está implementado.");
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error("Tu navegador no permite acceder a la cámara.");
+    }
+
+    this.stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        facingMode: "user",
+        width: {
+          ideal: 1280,
+        },
+        height: {
+          ideal: 720,
+        },
+      },
+    });
+
+    this.videoElement.srcObject = this.stream;
+
+    await this.videoElement.play();
+
+    return this.stream;
   }
 
   stop() {
@@ -23,6 +44,7 @@ export class CameraController {
       track.stop();
     });
 
+    this.videoElement.pause();
     this.videoElement.srcObject = null;
     this.stream = null;
   }

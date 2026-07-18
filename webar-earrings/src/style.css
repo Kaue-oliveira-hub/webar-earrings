@@ -106,7 +106,7 @@ h2 {
 }
 
 .button:hover {
-  transform: translateY(-1px);
+  transform: translateY(0px);
 }
 
 .button:focus-visible,

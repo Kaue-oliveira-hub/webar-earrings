@@ -73,7 +73,6 @@ document.querySelector("#app").innerHTML = `
           role="status"
           aria-live="polite"
         >
-          Pulsa «Activar cámara» para comenzar.
         </div>
 
         <footer class="camera-modal__footer">
@@ -97,3 +96,42 @@ document.querySelector("#app").innerHTML = `
     </section>
   </main>
 `;
+
+const openCameraButton = document.querySelector("#open-camera-button");
+const closeCameraButton = document.querySelector("#close-camera-button");
+const cancelCameraButton = document.querySelector("#cancel-camera-button");
+const cameraModal = document.querySelector("#camera-modal");
+const cameraStatus = document.querySelector("#camera-status");
+
+function setCameraStatus(message, state = "default") {
+  cameraStatus.textContent = message;
+  cameraStatus.dataset.state = state;
+}
+
+function openCameraModal() {
+  cameraModal.classList.add("is-open");
+  cameraModal.setAttribute("aria-hidden", "false");
+}
+
+function closeCameraModal() {
+  cameraModal.classList.remove("is-open");
+  cameraModal.setAttribute("aria-hidden", "true");
+}
+
+openCameraButton.addEventListener("click", () => {
+  openCameraModal();
+});
+
+closeCameraButton.addEventListener("click", () => {
+  closeCameraModal();
+});
+
+cancelCameraButton.addEventListener("click", () => {
+  closeCameraModal();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && cameraModal.classList.contains("is-open")) {
+    closeCameraModal();
+  }
+});
