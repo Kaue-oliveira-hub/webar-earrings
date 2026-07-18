@@ -1,6 +1,8 @@
 import "./style.css";
 import { CameraController } from "./camera/cameraController.js";
 import { PhotoCapture } from "./capture/photoCapture.js";
+import { FaceAnalyzer } from "./tracking/faceAnalyzer.js";
+
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -148,6 +150,7 @@ const captureCanvas = document.querySelector("#capture-canvas");
 const cameraController = new CameraController(cameraVideo);
 const photoCapture = new PhotoCapture(cameraVideo, captureCanvas);
 
+const faceAnalyzer = new FaceAnalyzer();
 
 function setCameraStatus(message, state = "default") {
   cameraStatus.textContent = message;
@@ -224,10 +227,15 @@ async function startCamera() {
 
     await cameraController.start();
 
+    setCameraStatus("Preparando análisis facial...");
+
+    await faceAnalyzer.initialize();
+
     hideCameraPlaceholder();
     showLiveCameraState();
 
     startCameraButton.textContent = "Cámara activa";
+
     setCameraStatus("Coloca tu rostro dentro de la guía y busca buena iluminación.", "success");
   } catch (error) {
     console.error(error);
@@ -270,13 +278,25 @@ function capturePhoto() {
   }
 
   try {
-    photoCapture.captureMirroredFrame();
+    const capture = photoCapture.captureMirroredFrame();
+    const analysis = faceAnalyzer.analyzeImage(capture.canvas);
+
+    console.log("Face analysis:", analysis);
 
     showCapturePhotoState();
 
+     if (!analysis.hasFace) {
     setCameraStatus(
-      "Foto capturada. Ahora podríamos colocar el pendiente sobre esta imagen.",
-      "success",
+      "No se ha detectado ningún rostro. Repite la foto con más luz y el rostro dentro de la guía.",
+      "error",
+    );
+
+    return;
+  }
+
+    setCameraStatus(
+     `Rostro detectado con ${analysis.landmarks.length} landmarks.`,
+    "success",
     );
   } catch (error) {
     if (error.message === "VIDEO_NOT_READY") {
@@ -287,6 +307,15 @@ function capturePhoto() {
 
       return;
     }
+    
+    if (error.message === "FACE_ANALYZER_NOT_READY") {
+  setCameraStatus(
+    "El análisis facial todavía no está listo. Espera un momento e inténtalo de nuevo.",
+    "error",
+  );
+
+  return;
+}
 
     console.error(error);
 
