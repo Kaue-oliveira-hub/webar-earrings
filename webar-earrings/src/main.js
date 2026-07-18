@@ -1,6 +1,6 @@
 import "./style.css";
 import { CameraController } from "./camera/cameraController.js";
-
+import { PhotoCapture } from "./capture/photoCapture.js";
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -141,13 +141,12 @@ const cameraModal = document.querySelector("#camera-modal");
 const cameraStatus = document.querySelector("#camera-status");
 const cameraVideo = document.querySelector("#camera-video");
 const cameraPlaceholder = document.querySelector("#camera-placeholder");
-
-const cameraController = new CameraController(cameraVideo);
-
 const cameraView = document.querySelector(".camera-view");
 const cameraGuide = document.querySelector("#camera-guide");
 const captureCanvas = document.querySelector("#capture-canvas");
-const captureContext = captureCanvas.getContext("2d");
+
+const cameraController = new CameraController(cameraVideo);
+const photoCapture = new PhotoCapture(cameraVideo, captureCanvas);
 
 
 function setCameraStatus(message, state = "default") {
@@ -264,35 +263,38 @@ async function startCamera() {
   }
 }
 
-
 function capturePhoto() {
   if (!cameraController.isActive) {
-    setCameraStatus("Activar la cámara antes de hacer la foto.", "error");
-    return;
-}
-  const videoWidth = cameraVideo.videoWidth;
-  const videoHeight = cameraVideo.videoHeight;
-
-  if (!videoWidth || !videoHeight) {
-    setCameraStatus("La cámara todavia no está lista. Intenta de nuevo.", "error");
+    setCameraStatus("Activa la cámara antes de hacer la foto.", "error");
     return;
   }
 
-  captureCanvas.width = videoWidth;
-  captureCanvas.height = videoHeight;
+  try {
+    photoCapture.captureMirroredFrame();
 
-  captureContext.save();
+    showCapturePhotoState();
 
-  captureContext.translate(videoWidth, 0);
-  captureContext.scale(-1, 1);
+    setCameraStatus(
+      "Foto capturada. Ahora podríamos colocar el pendiente sobre esta imagen.",
+      "success",
+    );
+  } catch (error) {
+    if (error.message === "VIDEO_NOT_READY") {
+      setCameraStatus(
+        "La cámara todavía no está lista. Inténtalo de nuevo.",
+        "error",
+      );
 
-  captureContext.drawImage(cameraVideo, 0, 0, videoWidth, videoHeight);
+      return;
+    }
 
-  captureContext.restore();
-  
-  showCapturePhotoState();
-  
-  setCameraStatus("Foto capturada. Ahora podríamos colocar el pendiente sobre esta imagen.", "success");
+    console.error(error);
+
+    setCameraStatus(
+      "No se ha podido capturar la foto. Inténtalo de nuevo.",
+      "error",
+    );
+  }
 }
 
 openCameraButton.addEventListener("click", () => {
@@ -327,19 +329,21 @@ cameraModal.addEventListener("click", (event) => {
 
 
 function retakePhoto() {
-  if (!cameraController.isActive){
+  if (!cameraController.isActive) {
     resetCaptureState();
     showCameraPlaceholder();
     setCameraStatus("");
     return;
   }
 
-  captureContext.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
+  photoCapture.clear();
 
   hideCameraPlaceholder();
   showLiveCameraState();
-  setCameraStatus("Coloca tu rostro dentro de la guía y busca buena iluminación.", "success",
 
+  setCameraStatus(
+    "Coloca tu rostro dentro de la guía y busca buena iluminación.",
+    "success",
   );
 }
 
