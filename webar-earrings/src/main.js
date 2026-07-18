@@ -129,6 +129,8 @@ function openCameraModal() {
   cameraModal.setAttribute("aria-hidden", "false");
 
     setCameraStatus("");
+document.body.classList.add("modal-open");
+
 }
 
 function closeCameraModal() {
@@ -142,6 +144,7 @@ function closeCameraModal() {
   cameraModal.setAttribute("aria-hidden", "true");
 
   setCameraStatus("");
+  document.body.classList.remove("modal-open");
 }
 
 async function startCamera() {
@@ -208,6 +211,12 @@ closeCameraButton.addEventListener("click", () => {
 cancelCameraButton.addEventListener("click", () => {
   closeCameraModal();
 });
+
+cameraModal.addEventListener("click", (event) => {
+  if (event.target === cameraModal) {
+    closeCameraModal();
+  }
+  });
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape" && cameraModal.classList.contains("is-open")) {
