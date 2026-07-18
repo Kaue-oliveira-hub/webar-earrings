@@ -2,7 +2,7 @@ import "./style.css";
 import { CameraController } from "./camera/cameraController.js";
 import { PhotoCapture } from "./capture/photoCapture.js";
 import { FaceAnalyzer } from "./tracking/faceAnalyzer.js";
-
+import { LandmarkDebugRenderer } from "./rendering/landmarkDebugRenderer.js";
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -67,6 +67,12 @@ document.querySelector("#app").innerHTML = `
             id="capture-canvas"
             class="camera-view__canvas"
           ></canvas>
+
+          <canvas
+            id="debug-canvas"
+            class="camera-view__debug-canvas"
+          ></canvas>
+
           <div
             id="camera-guide"
             class="camera-view__guide"
@@ -146,11 +152,13 @@ const cameraPlaceholder = document.querySelector("#camera-placeholder");
 const cameraView = document.querySelector(".camera-view");
 const cameraGuide = document.querySelector("#camera-guide");
 const captureCanvas = document.querySelector("#capture-canvas");
+const debugCanvas = document.querySelector("#debug-canvas");
 
 const cameraController = new CameraController(cameraVideo);
 const photoCapture = new PhotoCapture(cameraVideo, captureCanvas);
-
 const faceAnalyzer = new FaceAnalyzer();
+const landmarkDebugRenderer = new LandmarkDebugRenderer(debugCanvas);
+
 
 function setCameraStatus(message, state = "default") {
   cameraStatus.textContent = message;
@@ -168,6 +176,8 @@ function showLiveCameraState() {
   captureCanvas.classList.remove("is-visible");
   cameraGuide.classList.add("is-visible");
 
+hideDebugCanvas();
+
   startCameraButton.classList.add("is-hidden");
   capturePhotoButton.classList.remove("is-hidden");
   retakePhotoButton.classList.add("is-hidden");
@@ -183,10 +193,22 @@ function showCapturePhotoState() {
   retakePhotoButton.classList.remove("is-hidden");
 }
 
+function showDebugCanvas() {
+  debugCanvas.classList.add("is-visible");
+}
+
+function hideDebugCanvas() {
+  debugCanvas.classList.remove("is-visible");
+  landmarkDebugRenderer.clear();
+}
+
+
 function resetCaptureState() {
 cameraView.classList.remove("has-capture");
   captureCanvas.classList.remove("is-visible");
   cameraGuide.classList.remove("is-visible");
+
+ hideDebugCanvas();
 
 startCameraButton.classList.remove("is-hidden");
   capturePhotoButton.classList.add("is-hidden");
@@ -285,7 +307,11 @@ function capturePhoto() {
 
     showCapturePhotoState();
 
+    landmarkDebugRenderer.resize(capture.width, capture.height);
+
      if (!analysis.hasFace) {
+      hideDebugCanvas();
+
     setCameraStatus(
       "No se ha detectado ningún rostro. Repite la foto con más luz y el rostro dentro de la guía.",
       "error",
@@ -293,7 +319,9 @@ function capturePhoto() {
 
     return;
   }
-
+    landmarkDebugRenderer.drawLandmarks(analysis.landmarks);
+    showDebugCanvas();
+    
     setCameraStatus(
      `Rostro detectado con ${analysis.landmarks.length} landmarks.`,
     "success",
@@ -307,7 +335,7 @@ function capturePhoto() {
 
       return;
     }
-    
+
     if (error.message === "FACE_ANALYZER_NOT_READY") {
   setCameraStatus(
     "El análisis facial todavía no está listo. Espera un momento e inténtalo de nuevo.",
