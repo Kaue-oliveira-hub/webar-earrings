@@ -12,7 +12,11 @@ export class CameraController {
 
   async start() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-      throw new Error("Tu navegador no permite acceder a la cámara.");
+      throw new Error("MEDIA_DEVICES_UNSUPPORTED");
+    }
+
+    if (this.stream) {
+      return this.stream;
     }
 
     this.stream = await navigator.mediaDevices.getUserMedia({
@@ -20,10 +24,10 @@ export class CameraController {
       video: {
         facingMode: "user",
         width: {
-          ideal: 1280,
+          ideal: 720,
         },
         height: {
-          ideal: 720,
+          ideal: 960,
         },
       },
     });
