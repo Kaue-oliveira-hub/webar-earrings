@@ -3,6 +3,8 @@ import { CameraController } from "./camera/cameraController.js";
 import { PhotoCapture } from "./capture/photoCapture.js";
 import { FaceAnalyzer } from "./tracking/faceAnalyzer.js";
 import { LandmarkDebugRenderer } from "./rendering/landmarkDebugRenderer.js";
+import { EAR_DEBUG_LANDMARK_INDEXES } from "./tracking/faceLandmarkIndexes.js";
+
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -319,11 +321,15 @@ function capturePhoto() {
 
     return;
   }
-    landmarkDebugRenderer.drawLandmarks(analysis.landmarks);
+    landmarkDebugRenderer.drawLandmarks(analysis.landmarks, { 
+      selectedIndexes: EAR_DEBUG_LANDMARK_INDEXES,
+      selectedColor: "rgb(255, 92, 11)",
+      selectedRadius:7,
+    });
     showDebugCanvas();
     
     setCameraStatus(
-     `Rostro detectado con ${analysis.landmarks.length} landmarks.`,
+     `Rostro detectado con ${analysis.landmarks.length} landmarks. Los puntos rojos son referencias laterales para estimar la oreja.`,
     "success",
     );
   } catch (error) {
