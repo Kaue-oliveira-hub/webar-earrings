@@ -4,7 +4,7 @@ import { PhotoCapture } from "./capture/photoCapture.js";
 import { FaceAnalyzer } from "./tracking/faceAnalyzer.js";
 import { LandmarkDebugRenderer } from "./rendering/landmarkDebugRenderer.js";
 import { EAR_DEBUG_LANDMARK_INDEXES } from "./tracking/faceLandmarkIndexes.js";
-
+import { estimateEarAnchors } from "./tracking/earEstimator.js";
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -321,11 +321,18 @@ function capturePhoto() {
 
     return;
   }
+  const earAnchors = estimateEarAnchors(analysis.landmarks);
+
+console.log("Estimated ear anchors:", earAnchors);
+
     landmarkDebugRenderer.drawLandmarks(analysis.landmarks, { 
       selectedIndexes: EAR_DEBUG_LANDMARK_INDEXES,
       selectedColor: "rgb(255, 92, 11)",
       selectedRadius:7,
     });
+landmarkDebugRenderer.drawPoint(earAnchors.left);
+landmarkDebugRenderer.drawPoint(earAnchors.right);
+
     showDebugCanvas();
     
     setCameraStatus(

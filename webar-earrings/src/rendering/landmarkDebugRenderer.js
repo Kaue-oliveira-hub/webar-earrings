@@ -62,4 +62,32 @@ export class LandmarkDebugRenderer {
       this.context.fill();
     });
   }
+  
+  drawPoint(point, options = {}) {
+  const {
+    radius = 8,
+    color = "rgba(0, 140, 255, 1)",
+    strokeColor = "rgba(255, 255, 255, 1)",
+    strokeWidth = 2,
+  } = options;
+
+  if (!point) {
+    return;
+  }
+
+  const width = this.canvasElement.width;
+  const height = this.canvasElement.height;
+
+  const x = point.x * width;
+  const y = point.y * height;
+
+  this.context.beginPath();
+  this.context.arc(x, y, radius, 0, Math.PI * 2);
+  this.context.fillStyle = color;
+  this.context.fill();
+
+  this.context.lineWidth = strokeWidth;
+  this.context.strokeStyle = strokeColor;
+  this.context.stroke();
+}
 }
