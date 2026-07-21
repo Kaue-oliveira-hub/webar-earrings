@@ -24,7 +24,9 @@ function getFaceWidth(landmarks) {
 
 function createEstimatedEarPoint(basePoint, faceWidth, side) {
   const horizontalDirection = side === "left" ? -1 : 1;
-
+ // Calibración inicial para foto guiada a 30–45°,
+  // con la oreja visible y la cabeza ligeramente inclinada.
+  // Estos valores se ajustarán más adelante por producto y por lado visible
   return {
     x: basePoint.x + horizontalDirection * faceWidth * 0.108,
     y: basePoint.y + faceWidth * 0.18,
