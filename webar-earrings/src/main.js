@@ -5,6 +5,8 @@ import { FaceAnalyzer } from "./tracking/faceAnalyzer.js";
 import { LandmarkDebugRenderer } from "./rendering/landmarkDebugRenderer.js";
 import { EAR_DEBUG_LANDMARK_INDEXES } from "./tracking/faceLandmarkIndexes.js";
 import { estimateEarAnchors } from "./tracking/earEstimator.js";
+import { TRY_ON_CONFIG } from "./config/tryOnConfig.js";
+
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -260,7 +262,9 @@ async function startCamera() {
 
     startCameraButton.textContent = "Cámara activa";
 
-    setCameraStatus("Coloca tu rostro dentro de la guía y busca buena iluminación.", "success");
+    setCameraStatus("Gira ligeramente la cabeza para dejar visible tu oreja derecha y busca buena iluminación.",
+  "success",
+);
   } catch (error) {
     console.error(error);
 
@@ -322,22 +326,28 @@ function capturePhoto() {
     return;
   }
   const earAnchors = estimateEarAnchors(analysis.landmarks);
+  const visibleEarAnchor = earAnchors[TRY_ON_CONFIG.visibleEarSide];
 
 console.log("Estimated ear anchors:", earAnchors);
+console.log("Visible ear anchor:", visibleEarAnchor);
 
     landmarkDebugRenderer.drawLandmarks(analysis.landmarks, { 
       selectedIndexes: EAR_DEBUG_LANDMARK_INDEXES,
       selectedColor: "rgb(255, 92, 11)",
       selectedRadius:7,
     });
-landmarkDebugRenderer.drawPoint(earAnchors.left);
-landmarkDebugRenderer.drawPoint(earAnchors.right);
+landmarkDebugRenderer.drawPoint(visibleEarAnchor,{
+    radius:9,
+    color: "rgba(0, 140, 255, 1)",
+    selectedRadius:7,
+});
+
 
     showDebugCanvas();
     
     setCameraStatus(
-     `Rostro detectado con ${analysis.landmarks.length} landmarks. Los puntos rojos son referencias laterales para estimar la oreja.`,
-    "success",
+     `Rostro detectado. El punto azul marca la estimación inicial del lóbulo derecho.`,
+  "success",
     );
   } catch (error) {
     if (error.message === "VIDEO_NOT_READY") {
@@ -412,8 +422,8 @@ function retakePhoto() {
   showLiveCameraState();
 
   setCameraStatus(
-    "Coloca tu rostro dentro de la guía y busca buena iluminación.",
-    "success",
+    "Gira ligeramente la cabeza para dejar visible tu oreja derecha y busca buena iluminación.",
+  "success",
   );
 }
 
