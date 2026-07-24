@@ -20,8 +20,8 @@ export const EARRING_PRODUCTS = [
         sideAdjustments: {
           right: {
             anchor: {
-              x: 0.5,
-              y: 0.02,
+              x: 0.1,
+              y: 0.1,
             },
             scale: 0.15,
             rotation: 0,

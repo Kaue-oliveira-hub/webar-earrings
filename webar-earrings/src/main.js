@@ -6,7 +6,8 @@ import { LandmarkDebugRenderer } from "./rendering/landmarkDebugRenderer.js";
 import { EAR_DEBUG_LANDMARK_INDEXES } from "./tracking/faceLandmarkIndexes.js";
 import { estimateEarAnchors } from "./tracking/earEstimator.js";
 import { TRY_ON_CONFIG } from "./config/tryOnConfig.js";
-
+import { EarringRenderer } from "./rendering/earringRenderer.js";
+import { DEFAULT_EARRING_VARIANT } from "./products/earringProducts.js";
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -76,7 +77,10 @@ document.querySelector("#app").innerHTML = `
             id="debug-canvas"
             class="camera-view__debug-canvas"
           ></canvas>
-
+<canvas
+  id="earring-canvas"
+  class="camera-view__earring-canvas"
+></canvas>
           <div
             id="camera-guide"
             class="camera-view__guide"
@@ -155,14 +159,17 @@ const cameraVideo = document.querySelector("#camera-video");
 const cameraPlaceholder = document.querySelector("#camera-placeholder");
 const cameraView = document.querySelector(".camera-view");
 const cameraGuide = document.querySelector("#camera-guide");
+
 const captureCanvas = document.querySelector("#capture-canvas");
 const debugCanvas = document.querySelector("#debug-canvas");
+const earringCanvas = document.querySelector("#earring-canvas");
+
 
 const cameraController = new CameraController(cameraVideo);
 const photoCapture = new PhotoCapture(cameraVideo, captureCanvas);
 const faceAnalyzer = new FaceAnalyzer();
 const landmarkDebugRenderer = new LandmarkDebugRenderer(debugCanvas);
-
+const earringRenderer = new EarringRenderer(earringCanvas);
 
 function setCameraStatus(message, state = "default") {
   cameraStatus.textContent = message;
@@ -181,6 +188,7 @@ function showLiveCameraState() {
   cameraGuide.classList.add("is-visible");
 
 hideDebugCanvas();
+hideEarringCanvas();
 
   startCameraButton.classList.add("is-hidden");
   capturePhotoButton.classList.remove("is-hidden");
@@ -205,7 +213,14 @@ function hideDebugCanvas() {
   debugCanvas.classList.remove("is-visible");
   landmarkDebugRenderer.clear();
 }
+function showEarringCanvas() {
+  earringCanvas.classList.add("is-visible");
+}
 
+function hideEarringCanvas() {
+  earringCanvas.classList.remove("is-visible");
+  earringRenderer.clear();
+}
 
 function resetCaptureState() {
 cameraView.classList.remove("has-capture");
@@ -213,7 +228,7 @@ cameraView.classList.remove("has-capture");
   cameraGuide.classList.remove("is-visible");
 
  hideDebugCanvas();
-
+hideEarringCanvas();
 startCameraButton.classList.remove("is-hidden");
   capturePhotoButton.classList.add("is-hidden");
   retakePhotoButton.classList.add("is-hidden");
@@ -299,7 +314,7 @@ async function startCamera() {
   }
 }
 
-function capturePhoto() {
+async function capturePhoto() {
   if (!cameraController.isActive) {
     setCameraStatus("Activa la cámara antes de hacer la foto.", "error");
     return;
@@ -328,25 +343,48 @@ function capturePhoto() {
   const earAnchors = estimateEarAnchors(analysis.landmarks);
   const visibleEarAnchor = earAnchors[TRY_ON_CONFIG.visibleEarSide];
 
+  const leftOuter = analysis.landmarks[234];
+const rightOuter = analysis.landmarks[454];
+const faceWidth = Math.abs(rightOuter.x - leftOuter.x);
+
+
 console.log("Estimated ear anchors:", earAnchors);
 console.log("Visible ear anchor:", visibleEarAnchor);
+console.log("Face width:", faceWidth);
 
-    landmarkDebugRenderer.drawLandmarks(analysis.landmarks, { 
-      selectedIndexes: EAR_DEBUG_LANDMARK_INDEXES,
-      selectedColor: "rgb(255, 92, 11)",
-      selectedRadius:7,
-    });
-landmarkDebugRenderer.drawPoint(visibleEarAnchor,{
-    radius:9,
+
+if (TRY_ON_CONFIG.debugMode) {
+  landmarkDebugRenderer.drawLandmarks(analysis.landmarks, {
+    selectedIndexes: EAR_DEBUG_LANDMARK_INDEXES,
+    selectedColor: "rgba(255, 40, 40, 1)",
+    selectedRadius: 7,
+  });
+
+  landmarkDebugRenderer.drawPoint(visibleEarAnchor, {
+    radius: 9,
     color: "rgba(0, 140, 255, 1)",
-    selectedRadius:7,
-});
+  });
 
+  showDebugCanvas();
+} else {
+  hideDebugCanvas();
+}
+    earringRenderer.resize(capture.width, capture.height);
+    earringRenderer.clear();
 
-    showDebugCanvas();
-    
+await earringRenderer.drawEarring(
+  visibleEarAnchor,
+  DEFAULT_EARRING_VARIANT,
+  {
+    faceWidth,
+    side: TRY_ON_CONFIG.visibleEarSide,
+  },
+);
+
+showEarringCanvas();
+
     setCameraStatus(
-     `Rostro detectado. El punto azul marca la estimación inicial del lóbulo derecho.`,
+    "Pendiente colocado. Puedes repetir la foto si quieres probar otra posición.",
   "success",
     );
   } catch (error) {
