@@ -8,12 +8,34 @@ export const EARRING_PRODUCTS = [
         name: "Versión de prueba",
         imageUrl: "/earrings/earring1.png",
         type: "drop",
+
         anchor: {
           x: 0.5,
           y: 0.02,
         },
+
         scale: 0.15,
         rotation: 0,
+
+        sideAdjustments: {
+          right: {
+            anchor: {
+              x: 0.5,
+              y: 0.02,
+            },
+            scale: 0.15,
+            rotation: 0,
+          },
+
+          left: {
+            anchor: {
+              x: 0.5,
+              y: 0.02,
+            },
+            scale: 0.15,
+            rotation: 0,
+          },
+        },
       },
     ],
   },
