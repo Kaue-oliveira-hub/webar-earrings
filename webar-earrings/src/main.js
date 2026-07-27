@@ -81,15 +81,23 @@ document.querySelector("#app").innerHTML = `
   id="earring-canvas"
   class="camera-view__earring-canvas"
 ></canvas>
-          <div
-            id="camera-guide"
-            class="camera-view__guide"
-            aria-hidden="true"
-            >
-            <div class="face-guide">
-              <span class="face-guide__ear"></span>
-            </div>
-          </div>
+        <div
+  id="camera-guide"
+  class="camera-view__guide"
+  aria-hidden="true"
+>
+  <div class="pose-guide">
+    <img
+      src="/guides/right-ear-guide.svg"
+      alt=""
+      class="pose-guide__illustration"
+    />
+
+    <p class="pose-guide__label">
+      Gira ligeramente y deja visible tu oreja derecha
+    </p>
+  </div>
+</div>
 
           <div
             id="camera-placeholder"
@@ -174,6 +182,13 @@ const earringRenderer = new EarringRenderer(earringCanvas);
 function setCameraStatus(message, state = "default") {
   cameraStatus.textContent = message;
   cameraStatus.dataset.state = state;
+
+  if (!message || state !== "error") {
+    cameraStatus.classList.add("is-hidden");
+    return;
+  }
+
+  cameraStatus.classList.remove("is-hidden");
 }
 function showCameraPlaceholder() {
   cameraPlaceholder.classList.remove("is-hidden");
@@ -334,7 +349,7 @@ async function capturePhoto() {
       hideDebugCanvas();
 
     setCameraStatus(
-      "No se ha detectado ningún rostro. Repite la foto con más luz y el rostro dentro de la guía.",
+      "No se ha detectado ningún rostro. Repite la foto con más luz.",
       "error",
     );
 

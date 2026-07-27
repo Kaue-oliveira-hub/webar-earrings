@@ -266,27 +266,54 @@ h2 {
   display: block;
 }
 
-.face-guide{
-  position:relative;
-  width: min(52%, 220px);
-  aspect-ratio: 0.68;
-  border: 2px solid rgba(255, 255, 255, 0.86);
-  border-radius: 48% 42% 46% 44%;
-  transform: rotate(-14deg);
-  box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.12);
-}
-.face-guide__ear {
-  position: absolute;
-  top: 44%;
-  right: -18px;
-  width: 24px;
-  height: 44px;
-  border: 2px solid rgba(255, 255, 255, 0.86);
-  border-left: 0;
-  border-radius: 0 999px 999px 0;
+.pose-guide {
+  position: relative;
+
+  display: grid;
+  place-items: center;
+
+  width: 100%;
+  height: 100%;
+  padding: 24px;
 }
 
-.is-hidden{
+
+.pose-guide__illustration {
+  position: relative;
+  z-index: 1;
+
+  width: min(100%, 400px);
+  height: auto;
+ transform: translateY(-28px);
+  opacity: 0.95;
+  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.14));
+  pointer-events: none;
+}
+
+.pose-guide__label {
+  position: absolute;
+  z-index: 1;
+  right: 24px;
+  bottom: 20px;
+  left: 24px;
+
+  max-width: 340px;
+  margin: 0 auto;
+  padding: 10px 14px;
+
+  border-radius: 999px;
+
+  background: rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(8px);
+
+  color: #ffffff;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.is-hidden {
   display:none !important;
 }
 
