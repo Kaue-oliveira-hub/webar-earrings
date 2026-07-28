@@ -45,8 +45,7 @@ document.querySelector("#app").innerHTML = `
       >
         <header class="camera-modal__header">
           <div>
-            <p class="eyebrow">Prueba virtual</p>
-            <h2 id="camera-modal-title">Coloca tu rostro en pantalla</h2>
+          <h2 id="camera-modal-title">Prueba virtual</h2>
           </div>
 
           <button
@@ -137,7 +136,7 @@ document.querySelector("#app").innerHTML = `
             class="button button--primary is-hidden"
             type="button"
             >
-            Repetir foto
+            Repetir
           </button>
 
           <button
@@ -174,7 +173,7 @@ const earringCanvas = document.querySelector("#earring-canvas");
 
 
 const cameraController = new CameraController(cameraVideo);
-const photoCapture = new PhotoCapture(cameraVideo, captureCanvas);
+const photoCapture = new PhotoCapture(cameraVideo, captureCanvas, cameraView,);
 const faceAnalyzer = new FaceAnalyzer();
 const landmarkDebugRenderer = new LandmarkDebugRenderer(debugCanvas);
 const earringRenderer = new EarringRenderer(earringCanvas);

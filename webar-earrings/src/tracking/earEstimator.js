@@ -29,7 +29,7 @@ function createEstimatedEarPoint(basePoint, faceWidth, side) {
   // Estos valores se ajustarán más adelante por producto y por lado visible
   return {
     x: basePoint.x + horizontalDirection * faceWidth * 0.04,
-    y: basePoint.y + faceWidth * 0.20,
+    y: basePoint.y + faceWidth * 0.16,
     z: basePoint.z,
   };
 }

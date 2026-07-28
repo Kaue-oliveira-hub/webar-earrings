@@ -60,13 +60,6 @@ button {
   text-align: center;
 }
 
-.eyebrow {
-  margin: 0 0 12px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
 
 h1,
 h2,
@@ -81,11 +74,7 @@ h1 {
   letter-spacing: -0.055em;
 }
 
-h2 {
-  margin-bottom: 0;
-  font-size: clamp(1.25rem, 4vw, 1.8rem);
-  line-height: 1.1;
-}
+
 
 .product-preview__description {
   max-width: 460px;
@@ -95,46 +84,35 @@ h2 {
   color: #626262;
   line-height: 1.65;
 }
-
 .button {
-  min-height: 48px;
-  padding: 12px 22px;
-  border: 1px solid transparent;
+  min-height: 44px;
+  padding: 0 18px;
+
+  border: 0;
   border-radius: 999px;
+
+  font-size: 0.92rem;
   font-weight: 700;
-  transition:
-    transform 160ms ease,
-    background-color 160ms ease,
-    color 160ms ease;
-}
 
-.button:hover {
-  transform: translateY(0px);
-}
-
-.button:focus-visible,
-.icon-button:focus-visible {
-  outline: 3px solid rgba(25, 25, 25, 0.25);
-  outline-offset: 3px;
+  cursor: pointer;
 }
 
 .button--primary {
+  background: #111111;
   color: #ffffff;
-  background: #191919;
 }
 
 .button--primary:hover {
-  background: #343434;
+  background: #2a2a2a;
 }
 
 .button--secondary {
-  color: #191919;
-  border-color: rgba(25, 25, 25, 0.18);
-  background: transparent;
+  background: #f1f1f1;
+  color: #111111;
 }
 
 .button--secondary:hover {
-  background: rgba(25, 25, 25, 0.06);
+  background: #e7e7e7;
 }
 
 .camera-modal {
@@ -165,18 +143,26 @@ h2 {
 
   overflow: hidden;
 
-  border-radius: 24px;
+  border-radius: 16px;
   background: #ffffff;
   box-shadow: 0 28px 90px rgba(0, 0, 0, 0.3);
 }
 
 .camera-modal__header {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: 20px;
+  padding: 18px 18px 12px;
+}
 
-  padding: 24px;
+.camera-modal__header h2 {
+  margin: 0;
+
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #171717;
 }
 
 .icon-button {
@@ -199,10 +185,16 @@ h2 {
 
 .camera-view {
   position: relative;
-  width: 100%;
-  aspect-ratio: 3 / 4;
+
+  width: calc(100% - 28px);
+  max-height: 62vh;
+  margin: 0 auto;
+
   overflow: hidden;
-  background: #e9e7e2;
+
+  border-radius: 4px;
+  background: #111111;
+  aspect-ratio: 3 / 4;
 }
 
 .camera-view__video {
@@ -313,7 +305,7 @@ h2 {
   line-height: 1.35;
 }
 
-.is-hidden {
+.is-hidden{
   display:none !important;
 }
 
@@ -334,16 +326,21 @@ h2 {
 }
 
 .camera-status {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 40px;
-  padding: 8px 24px;
-  color: #5f5f5f;
-  background: #f7f6f3;
-  font-size: 0.9rem;
+  margin: 0 18px;
+  padding: 10px 14px;
+
+  border-radius: 14px;
+
+  background: #fff1f1;
+  color: #9f1d1d;
+
+  font-size: 0.85rem;
   line-height: 1.35;
-  
+  text-align: center;
+}
+
+.camera-status.is-hidden {
+  display: none;
 }
 
 .camera-status[data-state="error"] {
@@ -358,10 +355,13 @@ h2 {
 
 .camera-modal__footer {
   display: flex;
-  justify-content: flex-end;
-  gap: 12px;
+  gap: 10px;
 
-  padding: 20px 24px 24px;
+  padding: 14px 18px 18px;
+}
+
+.camera-modal__footer .button {
+  flex: 1;
 }
 
 @media (max-width: 600px) {
@@ -382,16 +382,34 @@ h2 {
   .camera-modal__dialog {
     width: 100%;
     max-height: 100dvh;
-    border-radius: 24px 24px 0 0;
+    border-radius: 0;
   }
 
   .camera-view {
     max-height: 58dvh;
   }
-
+.camera-modal__header {
+    padding: 16px 16px 10px;
+  }
+  .camera-view {
+    width: calc(100% - 24px);
+    max-height: 68dvh;
+    border-radius: 20px;
+  }
   .camera-modal__footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding-bottom: max(24px, env(safe-area-inset-bottom));
+       padding: 12px 16px 16px;
+  }
+ .button {
+    min-height: 46px;
+    font-size: 0.9rem;
+  }
+
+  .pose-guide__label {
+    bottom: 16px;
+    padding: 8px 12px;
+
+    font-size: 0.78rem;
   }
 }
