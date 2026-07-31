@@ -7,7 +7,7 @@ import { EAR_DEBUG_LANDMARK_INDEXES } from "./tracking/faceLandmarkIndexes.js";
 import { estimateEarAnchors } from "./tracking/earEstimator.js";
 import { TRY_ON_CONFIG } from "./config/tryOnConfig.js";
 import { EarringRenderer } from "./rendering/earringRenderer.js";
-import { DEFAULT_EARRING_VARIANT } from "./products/earringProducts.js";
+import { DEFAULT_EARRING_VARIANT, getAllEarringVariants } from "./products/earringProducts.js";
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -113,7 +113,11 @@ document.querySelector("#app").innerHTML = `
           aria-live="polite"
         >
         </div>
-
+        <div
+           id="variant-selector"
+           class="variant-selector"
+           aria-label="Seleccionar pendiente"
+        ></div>
         <footer class="camera-modal__footer">
           <button
             id="start-camera-button"
@@ -170,13 +174,17 @@ const cameraGuide = document.querySelector("#camera-guide");
 const captureCanvas = document.querySelector("#capture-canvas");
 const debugCanvas = document.querySelector("#debug-canvas");
 const earringCanvas = document.querySelector("#earring-canvas");
-
+const variantSelector = document.querySelector("#variant-selector");
 
 const cameraController = new CameraController(cameraVideo);
 const photoCapture = new PhotoCapture(cameraVideo, captureCanvas, cameraView,);
 const faceAnalyzer = new FaceAnalyzer();
 const landmarkDebugRenderer = new LandmarkDebugRenderer(debugCanvas);
 const earringRenderer = new EarringRenderer(earringCanvas);
+
+const earringVariants = getAllEarringVariants();
+let selectedEarringVariant = DEFAULT_EARRING_VARIANT;
+let lastCaptureData = null;
 
 function setCameraStatus(message, state = "default") {
   cameraStatus.textContent = message;
@@ -236,7 +244,58 @@ function hideEarringCanvas() {
   earringRenderer.clear();
 }
 
+function renderVariantSelector() {
+  variantSelector.innerHTML = earringVariants
+    .map((variant) => {
+      const isSelected = variant.id === selectedEarringVariant.id;
+
+      return `
+        <button
+          class="variant-selector__item${isSelected ? " is-selected" : ""}"
+          type="button"
+          data-variant-id="${variant.id}"
+          aria-label="Seleccionar ${variant.name}"
+          aria-pressed="${isSelected}"
+        >
+          <img
+            src="${variant.imageUrl}"
+            alt=""
+            class="variant-selector__image"
+          />
+        </button>
+      `;
+    })
+    .join("");
+}
+
+function getVariantById(variantId) {
+  return earringVariants.find((variant) => variant.id === variantId) ?? null;
+}
+
+async function renderSelectedEarringOnCapture() {
+  if (!lastCaptureData) return;
+
+  const { capture, visibleEarAnchor, faceWidth } = lastCaptureData;
+
+  earringRenderer.resize(capture.width, capture.height);
+  earringRenderer.clear();
+
+  await earringRenderer.drawEarring(
+    visibleEarAnchor,
+    selectedEarringVariant,
+    {
+      faceWidth,
+      side: TRY_ON_CONFIG.visibleEarSide,
+    },
+  );
+
+  showEarringCanvas();
+}
+
+
 function resetCaptureState() {
+lastCaptureData = null;
+
 cameraView.classList.remove("has-capture");
   captureCanvas.classList.remove("is-visible");
   cameraGuide.classList.remove("is-visible");
@@ -354,6 +413,7 @@ async function capturePhoto() {
 
     return;
   }
+
   const earAnchors = estimateEarAnchors(analysis.landmarks);
   const visibleEarAnchor = earAnchors[TRY_ON_CONFIG.visibleEarSide];
 
@@ -386,16 +446,13 @@ if (TRY_ON_CONFIG.debugMode) {
     earringRenderer.resize(capture.width, capture.height);
     earringRenderer.clear();
 
-await earringRenderer.drawEarring(
+lastCaptureData = {
+  capture,
   visibleEarAnchor,
-  DEFAULT_EARRING_VARIANT,
-  {
-    faceWidth,
-    side: TRY_ON_CONFIG.visibleEarSide,
-  },
-);
+  faceWidth,
+};
 
-showEarringCanvas();
+await renderSelectedEarringOnCapture();
 
     setCameraStatus(
     "Pendiente colocado. Puedes repetir la foto si quieres probar otra posición.",
@@ -429,6 +486,8 @@ showEarringCanvas();
   }
 }
 
+renderVariantSelector();
+
 openCameraButton.addEventListener("click", () => {
   openCameraModal();
 });
@@ -458,6 +517,22 @@ cameraModal.addEventListener("click", (event) => {
     closeCameraModal();
   }
   });
+
+variantSelector.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-variant-id]");
+
+  if (!button) return;
+
+  const variant = getVariantById(button.dataset.variantId);
+
+  if (!variant) return;
+
+  selectedEarringVariant = variant;
+
+  renderVariantSelector();
+
+  await renderSelectedEarringOnCapture();
+});
 
 
 function retakePhoto() {
