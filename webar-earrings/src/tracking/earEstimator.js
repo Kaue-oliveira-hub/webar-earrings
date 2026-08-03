@@ -28,8 +28,8 @@ function createEstimatedEarPoint(basePoint, faceWidth, side) {
   // con la oreja visible y la cabeza ligeramente inclinada.
   // Estos valores se ajustarán más adelante por producto y por lado visible
   return {
-    x: basePoint.x + horizontalDirection * faceWidth * 0.04,
-    y: basePoint.y + faceWidth * 0.16,
+    x: basePoint.x + horizontalDirection * faceWidth * 0.06,
+    y: basePoint.y + faceWidth * 0.14,
     z: basePoint.z,
   };
 }

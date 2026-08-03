@@ -8,6 +8,8 @@ import { estimateEarAnchors } from "./tracking/earEstimator.js";
 import { TRY_ON_CONFIG } from "./config/tryOnConfig.js";
 import { EarringRenderer } from "./rendering/earringRenderer.js";
 import { DEFAULT_EARRING_VARIANT, getAllEarringVariants } from "./products/earringProducts.js";
+import { evaluatePoseQuality } from "./tracking/poseQuality.js";
+
 
 document.querySelector("#app").innerHTML = `
   <main class="app">
@@ -413,6 +415,21 @@ async function capturePhoto() {
 
     return;
   }
+
+const poseQuality = evaluatePoseQuality(analysis.landmarks, {
+  visibleEarSide: TRY_ON_CONFIG.visibleEarSide,
+});
+
+console.log("Pose quality:", poseQuality);
+
+if (!poseQuality.isValid) {
+  hideDebugCanvas();
+  hideEarringCanvas();
+
+  setCameraStatus(poseQuality.message, "error");
+  return;
+}
+
 
   const earAnchors = estimateEarAnchors(analysis.landmarks);
   const visibleEarAnchor = earAnchors[TRY_ON_CONFIG.visibleEarSide];

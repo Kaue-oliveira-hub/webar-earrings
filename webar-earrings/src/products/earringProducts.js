@@ -107,7 +107,7 @@ export const EARRING_PRODUCTS = [
         anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_DROP,
 
         anchor: {
-          x: 0.45,
+          x: 0.5,
           y: 0.2,
         },
 
@@ -117,7 +117,7 @@ export const EARRING_PRODUCTS = [
         sideAdjustments: {
           right: {
             anchor: {
-              x: 0.45,
+              x: 0.5,
               y: 0.2,
             },
             scale: 0.5,
@@ -162,8 +162,8 @@ export const EARRING_PRODUCTS = [
         sideAdjustments: {
           right: {
             anchor: {
-              x: 0.20,
-              y: 0.2,
+              x: 0.45,
+              y: 0.18,
             },
             scale: 0.06,
             rotation: 0,
