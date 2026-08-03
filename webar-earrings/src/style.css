@@ -276,7 +276,7 @@ h1 {
 
   width: min(100%, 400px);
   height: auto;
- transform: translateY(-28px);
+ transform: translateY(-20px);
   opacity: 0.95;
   filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.14));
   pointer-events: none;

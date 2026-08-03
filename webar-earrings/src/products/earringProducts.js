@@ -39,16 +39,16 @@ export const EARRING_PRODUCTS = [
               x: 0.5,
               y: 0.5,
             },
-            scale: 0.08,
+            scale: 0.04,
             rotation: 0,
           },
 
           left: {
             anchor: {
-              x: 0.45,
+              x: 0.5,
               y: 0.5,
             },
-            scale: 0.08,
+            scale: 0.04,
             rotation: 0,
           },
         },
@@ -72,19 +72,19 @@ export const EARRING_PRODUCTS = [
         sideAdjustments: {
           right: {
             anchor: {
-              x: 0.5,
+              x: 0.45,
               y: 0.5,
             },
-            scale: 0.08,
+            scale: 0.04,
             rotation: 0,
           },
 
           left: {
             anchor: {
-              x: 0.5,
+              x: 0.55,
               y: 0.5,
             },
-            scale: 0.08,
+            scale: 0.04,
             rotation: 0,
           },
         },
@@ -117,19 +117,19 @@ export const EARRING_PRODUCTS = [
         sideAdjustments: {
           right: {
             anchor: {
-              x: 0.5,
-              y: 0.02,
+              x: 0.45,
+              y: 0.2,
             },
-            scale: 0.15,
+            scale: 0.5,
             rotation: 0,
           },
 
           left: {
             anchor: {
-              x: 0.5,
-              y: 0.02,
+              x: 0.45,
+              y: 0.2,
             },
-            scale: 0.15,
+            scale: 0.5,
             rotation: 0,
           },
         },
@@ -162,19 +162,19 @@ export const EARRING_PRODUCTS = [
         sideAdjustments: {
           right: {
             anchor: {
-              x: 0.48,
-              y: 0.18,
+              x: 0.20,
+              y: 0.2,
             },
-            scale: 0.16,
+            scale: 0.06,
             rotation: 0,
           },
 
           left: {
             anchor: {
-              x: 0.52,
+              x: 0.5,
               y: 0.18,
             },
-            scale: 0.16,
+            scale: 0.06,
             rotation: 0,
           },
         },
