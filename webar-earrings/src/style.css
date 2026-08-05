@@ -260,28 +260,66 @@ h1 {
 
 .pose-guide {
   position: relative;
-
   display: grid;
   place-items: center;
-
   width: 100%;
   height: 100%;
   padding: 24px;
 }
 
-
-.pose-guide__illustration {
+.pose-guide {
   position: relative;
-  z-index: 1;
-
-  width: min(100%, 400px);
-  height: auto;
- transform: translateY(-20px);
-  opacity: 0.95;
-  filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.14));
-  pointer-events: none;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 24px;
 }
 
+/* Seguridad: si todavía queda una imagen SVG en el HTML o en caché, no se muestra */
+.pose-guide__illustration {
+  display: none !important;
+}
+
+/* Punto guía único y minimalista */
+.pose-guide__target {
+  position: absolute;
+  z-index: 2;
+  left: var(--ear-target-x, 68%);
+  top: var(--ear-target-y, 50%);
+
+  display: grid;
+  width: 26px;
+  height: 26px;
+  place-items: center;
+
+  transform: translate(-50%, -50%);
+
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.26);
+  opacity: 0.88;
+  box-shadow: none;
+  pointer-events: none;
+
+  transition:
+    left 140ms ease,
+    top 140ms ease,
+    opacity 140ms ease;
+}
+
+
+
+/* Bolita central blanca */
+.pose-guide__target-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: none;
+}
+
+/* Texto más limpio */
 .pose-guide__label {
   position: absolute;
   z-index: 1;
@@ -289,20 +327,19 @@ h1 {
   bottom: 20px;
   left: 24px;
 
-  max-width: 340px;
+  max-width: 280px;
   margin: 0 auto;
-  padding: 10px 14px;
+  padding: 8px 12px;
 
   border-radius: 999px;
-
-  background: rgba(0, 0, 0, 0.38);
+  background: rgba(0, 0, 0, 0.24);
   backdrop-filter: blur(8px);
 
   color: #ffffff;
   text-align: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  line-height: 1.35;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .is-hidden{
@@ -429,31 +466,28 @@ h1 {
     border-radius: 0;
   }
 
-
-.camera-modal__header {
+  .camera-modal__header {
     padding: 16px 16px 10px;
   }
+
   .camera-view {
     width: calc(100% - 24px);
     max-height: 68dvh;
     border-radius: 20px;
   }
+
   .camera-modal__footer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-       padding: 12px 16px 16px;
+    padding: 12px 16px 16px;
   }
- .button {
+
+  .button {
     min-height: 46px;
     font-size: 0.9rem;
   }
 
-  .pose-guide__label {
-    bottom: 16px;
-    padding: 8px 12px;
-
-    font-size: 0.78rem;
-  }.variant-selector {
+  .variant-selector {
     padding: 10px 12px 0;
   }
 
@@ -461,5 +495,22 @@ h1 {
     width: 52px;
     height: 52px;
   }
+
+.pose-guide__target {
+  width: 24px;
+  height: 24px;
+}
+
+.pose-guide__target-dot {
+  width: 5px;
+  height: 5px;
+}
+
+.pose-guide__label {
+  bottom: 16px;
+  max-width: 260px;
+  padding: 8px 12px;
+  font-size: 0.76rem;
+}
 
 }

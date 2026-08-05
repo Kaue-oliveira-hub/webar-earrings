@@ -118,7 +118,7 @@ export const EARRING_PRODUCTS = [
           right: {
             anchor: {
               x: 0.5,
-              y: 0.2,
+              y: 0.18,
             },
             scale: 0.5,
             rotation: 0,
@@ -126,8 +126,8 @@ export const EARRING_PRODUCTS = [
 
           left: {
             anchor: {
-              x: 0.45,
-              y: 0.2,
+              x: 0.5,
+              y: 0.18,
             },
             scale: 0.5,
             rotation: 0,
@@ -158,6 +158,40 @@ export const EARRING_PRODUCTS = [
 
         scale: 0.06,
         rotation: 0,
+layers: [
+  {
+    id: "back",
+    type: "image",
+    imageUrl: "/earrings/hoop-gold-back.png",
+    opacity: 1,
+    offset: {
+      x: 0,
+      y: 0,
+    },
+  },
+
+  {
+    id: "front",
+    type: "image",
+    imageUrl: "/earrings/hoop-gold-front.png",
+    opacity: 1,
+    offset: {
+      x: 0,
+      y: 0,
+    },
+  },
+
+  {
+    id: "final-lobe-cut",
+    type: "erase",
+    offset: {
+      x: 0.18,
+      y: 0.18,
+    },
+    widthMultiplier: 0.42,
+    heightMultiplier: 0.48,
+  },
+],
 
         sideAdjustments: {
           right: {
@@ -166,16 +200,16 @@ export const EARRING_PRODUCTS = [
               y: 0.18,
             },
             scale: 0.06,
-            rotation: 0,
+            rotation: -0.16,
           },
 
           left: {
             anchor: {
               x: 0.5,
-              y: 0.18,
+              y: 0.16,
             },
             scale: 0.06,
-            rotation: 0,
+            rotation: -0.24,
           },
         },
       },
