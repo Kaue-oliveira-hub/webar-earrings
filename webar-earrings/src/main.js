@@ -40,135 +40,139 @@ document.querySelector("#app").innerHTML = `
         </button>
       </div>
     </section>
-
-    <section
-      id="camera-modal"
-      class="camera-modal"
-      aria-hidden="true"
-      aria-labelledby="camera-modal-title"
-    >
-      <div
-        class="camera-modal__dialog"
-        role="dialog"
-        aria-modal="true"
-      >
-        <header class="camera-modal__header">
-          <div>
-            <h2 id="camera-modal-title">Prueba virtual</h2>
-          </div>
-
-          <button
-            id="close-camera-button"
-            class="icon-button"
-            type="button"
-            aria-label="Cerrar cámara"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </header>
-
-        <div class="camera-view">
-          <video
-            id="camera-video"
-            class="camera-view__video"
-            autoplay
-            muted
-            playsinline
-          ></video>
-
-          <canvas
-            id="capture-canvas"
-            class="camera-view__canvas"
-          ></canvas>
-
-          <canvas
-            id="debug-canvas"
-            class="camera-view__debug-canvas"
-          ></canvas>
-
-          <canvas
-            id="earring-canvas"
-            class="camera-view__earring-canvas"
-          ></canvas>
-
-          <div
-            id="camera-guide"
-            class="camera-view__guide"
-            aria-hidden="true"
-          >
-            <div class="pose-guide">
-              <div class="pose-guide__target" aria-hidden="true">
-                <span class="pose-guide__target-dot"></span>
-              </div>
-
-              <p class="pose-guide__label">
-                Alinea el lóbulo con el punto
-              </p>
-            </div>
-          </div>
-
-          <div
-            id="camera-placeholder"
-            class="camera-view__placeholder"
-          >
-            <p>Activa la cámara para comenzar</p>
-          </div>
-        </div>
-
-        <div
-          id="camera-status"
-          class="camera-status"
-          role="status"
-          aria-live="polite"
-        ></div>
-
-        <div
-          id="variant-selector"
-          class="variant-selector"
-          aria-label="Seleccionar pendiente"
-        ></div>
-
-        <footer class="camera-modal__footer">
-          <button
-            id="start-camera-button"
-            class="button button--primary"
-            type="button"
-          >
-            Activar cámara
-          </button>
-
-          <button
-            id="capture-photo-button"
-            class="button button--primary is-hidden"
-            type="button"
-          >
-            Hacer foto
-          </button>
-
-          <button
-            id="retake-photo-button"
-            class="button button--primary is-hidden"
-            type="button"
-          >
-            Repetir
-          </button>
-
-          <button
-            id="cancel-camera-button"
-            class="button button--secondary"
-            type="button"
-          >
-            Cerrar
-          </button>
-        </footer>
+<section
+  id="camera-modal"
+  class="camera-modal"
+  aria-hidden="true"
+  aria-labelledby="camera-modal-title"
+>
+  <div
+    class="camera-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+  >
+    <header class="camera-modal__header">
+      <div>
+        <h2 id="camera-modal-title">Prueba virtual</h2>
       </div>
-    </section>
+
+      <button
+        id="close-camera-button"
+        class="icon-button"
+        type="button"
+        aria-label="Cerrar cámara"
+      >
+        <span aria-hidden="true">×</span>
+      </button>
+    </header>
+
+    <div class="camera-view">
+      <video
+        id="camera-video"
+        class="camera-view__video"
+        autoplay
+        muted
+        playsinline
+      ></video>
+
+      <canvas
+        id="capture-canvas"
+        class="camera-view__canvas"
+      ></canvas>
+
+      <canvas
+        id="debug-canvas"
+        class="camera-view__debug-canvas"
+      ></canvas>
+
+      <canvas
+        id="earring-canvas"
+        class="camera-view__earring-canvas"
+      ></canvas>
+
+      <div
+        id="camera-guide"
+        class="camera-view__guide"
+        aria-hidden="true"
+      >
+        <div class="pose-guide">
+          <div class="pose-guide__target" aria-hidden="true">
+            <span class="pose-guide__target-dot"></span>
+          </div>
+
+       <div class="pose-guide__label" id="pose-guide-message">
+  <span>Gira ligeramente la cabeza y alinea el lóbulo con la guía</span>
+
+  <button
+    id="pose-guide-dismiss"
+    class="pose-guide__dismiss"
+    type="button"
+    aria-label="Cerrar ayuda"
+  >
+    ×
+  </button>
+</div>
+        </div>
+      </div>
+
+      <div
+        id="camera-placeholder"
+        class="camera-view__placeholder"
+      >
+      </div>
+    </div>
+
+    <div
+      id="camera-status"
+      class="camera-status"
+      role="status"
+      aria-live="polite"
+    ></div>
+
+    <div
+      id="variant-selector"
+      class="variant-selector"
+      aria-label="Seleccionar pendiente"
+    ></div>
+
+    <footer class="camera-modal__footer">
+      <button
+        id="start-camera-button"
+        class="button button--primary"
+        type="button"
+      >
+        Activar cámara
+      </button>
+
+      <button
+        id="capture-photo-button"
+        class="capture-button is-hidden"
+        type="button"
+        aria-label="Hacer foto"
+      >
+        <span class="capture-button__outer">
+          <span class="capture-button__inner"></span>
+        </span>
+      </button>
+
+      <button
+  id="retake-photo-button"
+  class="secondary-icon-button is-hidden"
+  type="button"
+  aria-label="Repetir foto"
+>
+  <span aria-hidden="true">↺</span>
+</button>
+
+      
+    </footer>
+  </div>
+</section>
   </main>
 `;
 
 const openCameraButton = document.querySelector("#open-camera-button");
 const closeCameraButton = document.querySelector("#close-camera-button");
-const cancelCameraButton = document.querySelector("#cancel-camera-button");
 const startCameraButton = document.querySelector("#start-camera-button");
 const capturePhotoButton = document.querySelector("#capture-photo-button");
 const retakePhotoButton = document.querySelector("#retake-photo-button");
@@ -185,6 +189,9 @@ const debugCanvas = document.querySelector("#debug-canvas");
 const earringCanvas = document.querySelector("#earring-canvas");
 const variantSelector = document.querySelector("#variant-selector");
 
+const poseGuideMessage = document.querySelector("#pose-guide-message");
+const poseGuideDismiss = document.querySelector("#pose-guide-dismiss");
+
 const cameraController = new CameraController(cameraVideo);
 const photoCapture = new PhotoCapture(cameraVideo, captureCanvas, cameraView);
 const faceAnalyzer = new FaceAnalyzer();
@@ -197,10 +204,40 @@ let selectedEarringVariant = DEFAULT_EARRING_VARIANT;
 let lastCaptureData = null;
 
 let activeGuidedEarSide = TRY_ON_CONFIG.visibleEarSide;
+
 let guideTrackingFrameId = null;
 let lastGuideTrackingTime = 0;
 
+function setModalState(state) {
+  cameraModal.dataset.state = state;
+
+  const isCameraActive = state === "live" || state === "captured";
+  cameraModal.classList.toggle("is-camera-active", isCameraActive);
+}
 const GUIDE_TRACKING_INTERVAL = 180;
+
+let guideMessageTimeoutId = null;
+
+function showGuideMessage() {
+  poseGuideMessage.classList.remove("is-hidden");
+
+  if (guideMessageTimeoutId) {
+    clearTimeout(guideMessageTimeoutId);
+  }
+
+  guideMessageTimeoutId = window.setTimeout(() => {
+    poseGuideMessage.classList.add("is-hidden");
+  }, 7000);
+}
+
+function hideGuideMessage() {
+  poseGuideMessage.classList.add("is-hidden");
+
+  if (guideMessageTimeoutId) {
+    clearTimeout(guideMessageTimeoutId);
+    guideMessageTimeoutId = null;
+  }
+}
 
 function setCameraStatus(message, state = "default") {
   cameraStatus.textContent = message;
@@ -299,6 +336,9 @@ function showLiveCameraState() {
   captureCanvas.classList.remove("is-visible");
   cameraGuide.classList.add("is-visible");
 
+  showGuideMessage();
+
+  setModalState("live");
   setActiveGuidedEarSide(TRY_ON_CONFIG.visibleEarSide);
   startGuideTracking();
 
@@ -315,6 +355,9 @@ function showCapturePhotoState() {
   captureCanvas.classList.add("is-visible");
   cameraGuide.classList.remove("is-visible");
 
+  hideGuideMessage();
+
+  setModalState("captured");
   stopGuideTracking();
 
   startCameraButton.classList.add("is-hidden");
@@ -327,6 +370,7 @@ function resetCaptureState() {
 
   stopGuideTracking();
   setActiveGuidedEarSide(TRY_ON_CONFIG.visibleEarSide);
+  setModalState("idle");
 
   cameraView.classList.remove("has-capture");
   captureCanvas.classList.remove("is-visible");
@@ -393,6 +437,7 @@ function openCameraModal() {
   cameraModal.classList.add("is-open");
   cameraModal.setAttribute("aria-hidden", "false");
 
+  setModalState("idle");
   setCameraStatus("");
   document.body.classList.add("modal-open");
 }
@@ -408,6 +453,7 @@ function closeCameraModal() {
   cameraModal.classList.remove("is-open");
   cameraModal.setAttribute("aria-hidden", "true");
 
+  setModalState("idle");
   setCameraStatus("");
   document.body.classList.remove("modal-open");
 }
@@ -633,8 +679,9 @@ function retakePhoto() {
 
 renderVariantSelector();
 
-openCameraButton.addEventListener("click", () => {
+openCameraButton.addEventListener("click", async () => {
   openCameraModal();
+  await startCamera();
 });
 
 startCameraButton.addEventListener("click", () => {
@@ -653,14 +700,15 @@ closeCameraButton.addEventListener("click", () => {
   closeCameraModal();
 });
 
-cancelCameraButton.addEventListener("click", () => {
-  closeCameraModal();
-});
 
 cameraModal.addEventListener("click", (event) => {
   if (event.target === cameraModal) {
     closeCameraModal();
   }
+});
+
+poseGuideDismiss.addEventListener("click", () => {
+  hideGuideMessage();
 });
 
 variantSelector.addEventListener("click", async (event) => {
