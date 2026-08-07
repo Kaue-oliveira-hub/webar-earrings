@@ -528,7 +528,6 @@ async function capturePhoto() {
     const capture = photoCapture.captureMirroredFrame();
     const analysis = faceAnalyzer.analyzeImage(capture.canvas);
 
-    console.log("Face analysis:", analysis);
 
     showCapturePhotoState();
     landmarkDebugRenderer.resize(capture.width, capture.height);
@@ -550,7 +549,6 @@ async function capturePhoto() {
         visibleEarSide: activeGuidedEarSide,
       });
 
-      console.log("Pose quality:", poseQuality);
 
       if (!poseQuality.isValid) {
         hideDebugCanvas();
@@ -595,11 +593,7 @@ const visibleEarAnchor =
 
     setActiveGuidedEarSide(visibleEarSide);
 
-    console.log("Estimated ear anchors:", estimatedEarAnchors);
-    console.log("Visible ear side:", visibleEarSide);
-    console.log("Guided ear anchor:", guidedEarAnchor);
-    console.log("Visible ear anchor:", visibleEarAnchor);
-    console.log("Face width:", faceWidth);
+
 
     if (TRY_ON_CONFIG.debugMode) {
       landmarkDebugRenderer.drawLandmarks(analysis.landmarks, {
