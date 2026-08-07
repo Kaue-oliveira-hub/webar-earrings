@@ -204,9 +204,10 @@ let selectedEarringVariant = DEFAULT_EARRING_VARIANT;
 let lastCaptureData = null;
 
 let activeGuidedEarSide = TRY_ON_CONFIG.visibleEarSide;
-
 let guideTrackingFrameId = null;
 let lastGuideTrackingTime = 0;
+let guideMessageTimeoutId = null;
+let hasShownGuideMessage = false;
 
 function setModalState(state) {
   cameraModal.dataset.state = state;
@@ -216,10 +217,13 @@ function setModalState(state) {
 }
 const GUIDE_TRACKING_INTERVAL = 180;
 
-let guideMessageTimeoutId = null;
+
 
 function showGuideMessage() {
+  if (hasShownGuideMessage) return;
+
   poseGuideMessage.classList.remove("is-hidden");
+  hasShownGuideMessage = true;
 
   if (guideMessageTimeoutId) {
     clearTimeout(guideMessageTimeoutId);

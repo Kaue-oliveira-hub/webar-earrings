@@ -128,16 +128,30 @@ export class EarringRenderer {
     this.context.rotate(settings.rotation + (layer.rotation ?? 0));
     this.context.translate(layerOffsetX, layerOffsetY);
 
-    this.context.globalAlpha = layer.opacity ?? 1;
+   if (layer.type !== "erase") {
+  this.context.save();
+  this.context.globalAlpha = 0.16;
+  this.context.filter = "blur(4px)";
+  this.context.drawImage(
+    image,
+    -imageAnchorX + targetWidth * 0.018,
+    -imageAnchorY + targetHeight * 0.045,
+    targetWidth,
+    targetHeight,
+  );
+  this.context.restore();
+}
 
-    this.context.drawImage(
-      image,
-      -imageAnchorX,
-      -imageAnchorY,
-      targetWidth,
-      targetHeight,
-    );
+this.context.globalAlpha = layer.opacity ?? 1;
+this.context.filter = "none";
 
+this.context.drawImage(
+  image,
+  -imageAnchorX,
+  -imageAnchorY,
+  targetWidth,
+  targetHeight,
+);
     this.context.restore();
   }
 
