@@ -13,8 +13,6 @@ function resolveVariantLayers(variant) {
     return variant.layers;
   }
 
-  // Fallback para pendientes normales: stud, cadena, etc.
-  // Esto está bien mantenerlo. Solo se usa cuando una variante NO tiene layers.
   return [
     {
       id: "base",
@@ -103,8 +101,40 @@ export class EarringRenderer {
     };
   }
 
+  drawImageShadow(image, metrics) {
+    const {
+      targetWidth,
+      targetHeight,
+      imageAnchorX,
+      imageAnchorY,
+    } = metrics;
+
+    this.context.save();
+
+    this.context.globalAlpha = 0.14;
+    this.context.filter = "blur(4px)";
+
+    this.context.drawImage(
+      image,
+      -imageAnchorX + targetWidth * 0.018,
+      -imageAnchorY + targetHeight * 0.045,
+      targetWidth,
+      targetHeight,
+    );
+
+    this.context.restore();
+  }
+
   drawImageLayer(anchorPoint, image, settings, layer, options = {}) {
     const { side = "right" } = options;
+
+    const metrics = this.getLayerMetrics(
+      anchorPoint,
+      image,
+      settings,
+      layer,
+      options,
+    );
 
     const {
       anchorX,
@@ -115,7 +145,7 @@ export class EarringRenderer {
       imageAnchorY,
       layerOffsetX,
       layerOffsetY,
-    } = this.getLayerMetrics(anchorPoint, image, settings, layer, options);
+    } = metrics;
 
     this.context.save();
 
@@ -128,30 +158,21 @@ export class EarringRenderer {
     this.context.rotate(settings.rotation + (layer.rotation ?? 0));
     this.context.translate(layerOffsetX, layerOffsetY);
 
-   if (layer.type !== "erase") {
-  this.context.save();
-  this.context.globalAlpha = 0.16;
-  this.context.filter = "blur(4px)";
-  this.context.drawImage(
-    image,
-    -imageAnchorX + targetWidth * 0.018,
-    -imageAnchorY + targetHeight * 0.045,
-    targetWidth,
-    targetHeight,
-  );
-  this.context.restore();
-}
+    if (layer.shadow !== false) {
+      this.drawImageShadow(image, metrics);
+    }
 
-this.context.globalAlpha = layer.opacity ?? 1;
-this.context.filter = "none";
+    this.context.globalAlpha = layer.opacity ?? 1;
+    this.context.filter = "none";
 
-this.context.drawImage(
-  image,
-  -imageAnchorX,
-  -imageAnchorY,
-  targetWidth,
-  targetHeight,
-);
+    this.context.drawImage(
+      image,
+      -imageAnchorX,
+      -imageAnchorY,
+      targetWidth,
+      targetHeight,
+    );
+
     this.context.restore();
   }
 
@@ -219,7 +240,10 @@ this.context.drawImage(
 
       const image = await this.loadImage(layer.imageUrl ?? variant.imageUrl);
 
-      this.drawImageLayer(anchorPoint, image, settings, layer, options);
+      this.drawImageLayer(anchorPoint, image, settings, layer, {
+        ...options,
+        side,
+      });
     }
   }
 }
