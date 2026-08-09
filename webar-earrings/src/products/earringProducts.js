@@ -136,7 +136,7 @@ export const EARRING_PRODUCTS = [
       },
     ],
   },
-
+/* 
   {
     id: "gold-hoop",
     name: "Aro dorado",
@@ -214,7 +214,54 @@ layers: [
         },
       },
     ],
-  },
+  },*/
+
+{
+  id: "earring-drop",
+  name: "Pendiente colgante",
+  type: EARRING_TYPES.CHAIN,
+  anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_DROP,
+
+  variants: [
+    {
+      id: "earring1",
+      name: "Colgante",
+      imageUrl: "/earrings/earring1.png",
+      type: EARRING_TYPES.CHAIN,
+      anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_DROP,
+      thumbnailScale: 0.58,
+
+      anchor: {
+        x: 0.5,
+        y: 0.14,
+      },
+
+      scale: 0.18,
+      rotation: 0,
+
+      sideAdjustments: {
+        right: {
+          anchor: {
+            x: 0.5,
+            y: 0.14,
+          },
+          scale: 0.18,
+          rotation: 0,
+        },
+
+        left: {
+          anchor: {
+            x: 0.5,
+            y: 0.14,
+          },
+          scale: 0.18,
+          rotation: 0,
+        },
+      },
+    },
+  ],
+}
+
 ];
 
 export const DEFAULT_EARRING_PRODUCT = EARRING_PRODUCTS[0];

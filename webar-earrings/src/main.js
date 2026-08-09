@@ -401,11 +401,12 @@ function renderVariantSelector() {
           aria-label="Seleccionar ${variant.name}"
           aria-pressed="${isSelected}"
         >
-          <img
-            src="${variant.imageUrl}"
-            alt=""
-            class="variant-selector__image"
-          />
+        <img
+  src="${variant.imageUrl}"
+  alt=""
+  class="variant-selector__image"
+  style="--variant-thumbnail-scale: ${variant.thumbnailScale ?? 1};"
+/>
         </button>
       `;
     })
