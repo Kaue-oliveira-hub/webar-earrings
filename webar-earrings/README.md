@@ -21,7 +21,7 @@ This prototype reduces uncertainty by allowing users to preview earrings directl
 MVP prototype.
 
 The project is not a production-grade ear tracking system. It is a guided virtual try-on experience designed to validate UX, product visualization and ecommerce integration potential.
-
+but the goal is an advanced live try-on
 ## Demo flow
 
 1. User opens the try-on experience.
