@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.DS_Store
+.env
+.env.local
+npm-debug.log*
+
+Guia_prompts_videos_dataset_orejas.docx
+~$ia_prompts_videos_dataset_orejas.docx
+webar-earrings-live-rd/
+*.docx
+~$*
