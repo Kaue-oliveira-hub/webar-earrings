@@ -74,7 +74,11 @@ document.querySelector("#app").innerHTML = `
         muted
         playsinline
       ></video>
-
+<div 
+id="camera-loading" 
+class="camera-loading 
+is-hidden">
+</div>
       <canvas
         id="capture-canvas"
         class="camera-view__canvas"
@@ -183,6 +187,7 @@ const cameraVideo = document.querySelector("#camera-video");
 const cameraPlaceholder = document.querySelector("#camera-placeholder");
 const cameraView = document.querySelector(".camera-view");
 const cameraGuide = document.querySelector("#camera-guide");
+const cameraLoading = document.querySelector("#camera-loading");
 
 const captureCanvas = document.querySelector("#capture-canvas");
 const debugCanvas = document.querySelector("#debug-canvas");
@@ -308,6 +313,13 @@ function startGuideTracking() {
 
   guideTrackingFrameId = requestAnimationFrame(trackGuide);
 }
+function showCameraLoading() {
+  cameraLoading.classList.remove("is-hidden");
+}
+
+function hideCameraLoading() {
+  cameraLoading.classList.add("is-hidden");
+}
 
 function showCameraPlaceholder() {
   cameraPlaceholder.classList.remove("is-hidden");
@@ -316,6 +328,8 @@ function showCameraPlaceholder() {
 function hideCameraPlaceholder() {
   cameraPlaceholder.classList.add("is-hidden");
 }
+
+
 
 function showDebugCanvas() {
   debugCanvas.classList.add("is-visible");
@@ -439,8 +453,11 @@ async function renderSelectedEarringOnCapture() {
 }
 
 function openCameraModal() {
+  
   cameraModal.classList.add("is-open");
   cameraModal.setAttribute("aria-hidden", "false");
+
+  showCameraLoading();
 
   setModalState("idle");
   setCameraStatus("");
@@ -448,6 +465,7 @@ function openCameraModal() {
 }
 
 function closeCameraModal() {
+  hideCameraLoading();
   cameraController.stop();
   showCameraPlaceholder();
   resetCaptureState();
@@ -465,6 +483,7 @@ function closeCameraModal() {
 
 async function startCamera() {
   try {
+    showCameraLoading();
     startCameraButton.disabled = true;
     startCameraButton.textContent = "Activando...";
 
@@ -478,7 +497,7 @@ async function startCamera() {
 
     hideCameraPlaceholder();
     showLiveCameraState();
-
+hideCameraLoading();
     startCameraButton.textContent = "Cámara activa";
 
     setCameraStatus(
@@ -487,7 +506,7 @@ async function startCamera() {
     );
   } catch (error) {
     console.error(error);
-
+hideCameraLoading();
     cameraController.stop();
     showCameraPlaceholder();
 
