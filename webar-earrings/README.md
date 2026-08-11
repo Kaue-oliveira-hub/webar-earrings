@@ -1,74 +1,88 @@
 # WebAR Guided Virtual Try-On for Earrings
 
-Mobile-first WebAR prototype for guided virtual try-on of earrings in the browser.
+A mobile-first WebAR prototype for ecommerce, built to let users preview earrings directly in the browser using the device camera.
 
-This project demonstrates a lightweight ecommerce virtual try-on experience using the device camera, MediaPipe Face Landmarker and Canvas 2D rendering. The user aligns their earlobe with a visual guide, takes a photo, and can preview different earring variants on the captured image.
+**Live demo:** https://webar-earrings.vercel.app/
 
-## Project category
+## Project overview
 
-- Ecommerce WebAR / virtual try-on
-- Reusable product visualization prototype
-- Mobile-first browser-based AR experience
+This project is a functional MVP for a guided virtual try-on experience focused on earrings.
 
-## Problem solved
+The prototype uses the front camera, a guided ear alignment interface, MediaPipe Face Landmarker and Canvas 2D rendering to place transparent PNG earrings over the visible ear after capturing a guided photo.
 
-Buying earrings online can be difficult because customers cannot easily understand product size, visual fit or style on their own face.
+The goal is to explore how lightweight WebAR experiences can reduce buyer uncertainty in ecommerce product pages, especially for accessories such as earrings, piercings and jewellery.
 
-This prototype reduces uncertainty by allowing users to preview earrings directly through the browser, without installing an app.
+## Level
 
-## Current level
+**Functional MVP / commercial prototype**
 
-MVP prototype.
+This is not a production-ready automatic ear tracking system. It is a guided try-on prototype designed to validate UX, product presentation and technical feasibility in a browser-based ecommerce context.
 
-The project is not a production-grade ear tracking system. It is a guided virtual try-on experience designed to validate UX, product visualization and ecommerce integration potential.
-but the goal is an advanced live try-on
-## Demo flow
+## Core features
 
-1. User opens the try-on experience.
-2. Camera starts directly.
-3. User slightly turns their head.
-4. User aligns the earlobe with the guide point.
-5. User takes a photo.
-6. The selected earring is rendered on the captured image.
-7. User can switch between earring variants.
-8. User can retake the photo.
+- Mobile-first virtual try-on flow
+- Camera access from browser
+- Guided ear alignment interface
+- Loading spinner while camera initializes
+- Photo capture workflow
+- Earring rendering over captured image
+- Support for multiple PNG earring variants
+- Left/right ear side recalculation on each capture
+- Retake photo flow
+- Lightweight Canvas 2D rendering
+- Product variants configured from JavaScript data
 
-## Technologies
+## Tech stack
 
 - Vite
 - JavaScript
-- MediaPipe Tasks Vision
-- Face Landmarker
+- MediaPipe Face Landmarker
 - Canvas 2D
-- CSS mobile-first UI
-- PNG transparent product assets
+- HTML/CSS
+- Vercel
+
+## User flow
+
+1. User opens the ecommerce-style product page.
+2. User clicks **Probar pendiente**.
+3. The camera modal opens.
+4. A loading spinner appears while the camera is prepared.
+5. The user places the ear inside the visual guide.
+6. The user captures a photo.
+7. The selected earring is rendered over the visible ear.
+8. The user can switch between earring variants.
+9. The user can retake the photo and try the other ear.
 
 ## Tracking approach
 
-The prototype uses MediaPipe Face Landmarker to detect the face and estimate which side of the face is visible.
+The MVP uses MediaPipe Face Landmarker to detect the face and estimate orientation. Because MediaPipe Face Landmarker does not provide precise earlobe landmarks, this project uses a guided alignment approach.
 
-The earring is not attached to a real anatomical earlobe landmark. Instead, the system uses a guided target point. The user aligns the earlobe with this point before taking the photo.
+Instead of claiming automatic earlobe detection, the interface asks the user to place the ear inside a visual target. The system then renders the selected earring based on the guided target and recalculates the visible side on each capture.
 
-This approach is more stable for an MVP because MediaPipe Face Landmarker does not provide a precise earlobe or ear piercing landmark.
+This approach keeps the experience lightweight and browser-friendly while being honest about the limits of the current tracking method.
 
 ## Product rendering
 
-The project supports:
+The earrings are transparent PNG assets rendered on a Canvas 2D layer.
 
-- Single PNG earrings
-- Product variants
-- Per-side position, scale and rotation adjustments
-- Layered rendering for hoop earrings
-- Simple cut mask to simulate front/back depth
-- Soft shadow to reduce the “flat PNG” effect
+Each product variant can define:
+
+- image URL
+- scale
+- anchor point
+- rotation
+- side adjustments
+- thumbnail scale
+
+This makes it possible to test different earring styles without changing the main rendering logic.
 
 ## Current product types
 
 - Stud earrings
 - Chain/drop earrings
-- Hoop earrings with layered rendering
+- Long drop earrings
 
-## File structure
+## Architecture
 
 ```text
 src/
