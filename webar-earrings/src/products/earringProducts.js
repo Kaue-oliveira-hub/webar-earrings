@@ -236,7 +236,7 @@ layers: [
         y: 0.14,
       },
 
-      scale: 0.18,
+      scale: 0.08,
       rotation: 0,
 
       sideAdjustments: {
@@ -245,7 +245,7 @@ layers: [
             x: 0.5,
             y: 0.14,
           },
-          scale: 0.18,
+          scale: 0.08,
           rotation: 0,
         },
 
@@ -254,7 +254,7 @@ layers: [
             x: 0.5,
             y: 0.14,
           },
-          scale: 0.18,
+          scale: 0.08,
           rotation: 0,
         },
       },

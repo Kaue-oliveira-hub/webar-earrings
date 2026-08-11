@@ -488,7 +488,7 @@ h1 {
 }
 
 .camera-modal[data-state="live"] #start-camera-button,
-.camera-modal[data-state="live"] #retake-photo-button,
+.camera-modal[data-state="live"] #retake-photo-button
  {
   display: none !important;
 }
