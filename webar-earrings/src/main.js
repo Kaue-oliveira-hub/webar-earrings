@@ -582,13 +582,21 @@ async function capturePhoto() {
     const leftOuter = analysis.landmarks[234];
     const rightOuter = analysis.landmarks[454];
     const faceWidth = Math.abs(rightOuter.x - leftOuter.x);
+const estimatedEarAnchors = estimateEarAnchors(analysis.landmarks);
 
-   const estimatedEarAnchors = estimateEarAnchors(analysis.landmarks);
+const detectedCaptureEarSide =
+  TRY_ON_CONFIG.anchorMode === "guided-target"
+    ? detectGuidedEarSide(analysis.landmarks, activeGuidedEarSide)
+    : TRY_ON_CONFIG.visibleEarSide;
 
 const visibleEarSide =
   TRY_ON_CONFIG.anchorMode === "guided-target"
-    ? activeGuidedEarSide
-    : TRY_ON_CONFIG.visibleEarSide;
+    ? detectedCaptureEarSide === "right"
+      ? "left"
+      : "right"
+    : detectedCaptureEarSide;
+
+setActiveGuidedEarSide(visibleEarSide);
 
 const estimatedEarAnchor = estimatedEarAnchors[visibleEarSide];
 
@@ -610,8 +618,6 @@ const visibleEarAnchor =
 
       return;
     }
-
-    setActiveGuidedEarSide(visibleEarSide);
 
 
 
@@ -684,10 +690,13 @@ function retakePhoto() {
     return;
   }
 
-  photoCapture.clear();
+lastCaptureData = null;
 
-  hideCameraPlaceholder();
-  showLiveCameraState();
+photoCapture.clear();
+earringRenderer.clear();
+
+hideCameraPlaceholder();
+showLiveCameraState();
 
   setCameraStatus(
     "Alinea el lóbulo con el punto y busca buena iluminación.",
