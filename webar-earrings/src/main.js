@@ -105,7 +105,9 @@ is-hidden">
           </div>
 
        <div class="pose-guide__label" id="pose-guide-message">
-  <span>Turn your head slightly and align your earlobe with the guide</span>
+  <span>Turn your head slightly and .
+   After taking a photo, you can try different earrings without retaking it.
+   </span>
 
   <button
     id="pose-guide-dismiss"

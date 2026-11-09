@@ -302,14 +302,14 @@ h1 {
 
   max-width: 320px;
   margin: 0 auto;
-  padding: 10px 12px 10px 16px;
+  padding: 16px 24px 32px 24px;
 
-  border-radius: 999px;
+  border-radius: 16px;
   background: rgba(0, 0, 0, 0.38);
   backdrop-filter: blur(12px);
 
   color: #ffffff;
-  text-align: center;
+ 
   font-size: 0.78rem;
   font-weight: 700;
   line-height: 1.25;
@@ -334,6 +334,7 @@ h1 {
   font-size: 1rem;
   font-weight: 800;
   line-height: 1;
+  align-self: flex-start;
 }
 
 .is-hidden {
