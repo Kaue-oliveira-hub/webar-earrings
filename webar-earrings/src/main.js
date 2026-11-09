@@ -24,11 +24,11 @@ document.querySelector("#app").innerHTML = `
       <div class="product-preview__content">
         <p class="eyebrow">Virtual try-on</p>
 
-        <h1>Prueba tus pendientes</h1>
+        <h1>Try on earrings</h1>
 
         <p class="product-preview__description">
-          Utiliza la cámara frontal para visualizar cómo queda el pendiente.
-          Para ver mejor los detalles, busca un espacio bien iluminado.
+          Use your front camera to see how earrings look on you.
+          For the best results, use good lighting.
         </p>
 
         <button
@@ -36,7 +36,7 @@ document.querySelector("#app").innerHTML = `
           class="button button--primary"
           type="button"
         >
-          Probar pendiente
+          Try on earrings
         </button>
       </div>
     </section>
@@ -53,14 +53,14 @@ document.querySelector("#app").innerHTML = `
   >
     <header class="camera-modal__header">
       <div>
-        <h2 id="camera-modal-title">Prueba virtual</h2>
+        <h2 id="camera-modal-title">Virtual try-on</h2>
       </div>
 
       <button
         id="close-camera-button"
         class="icon-button"
         type="button"
-        aria-label="Cerrar cámara"
+        aria-label="Close camera"
       >
         <span aria-hidden="true">×</span>
       </button>
@@ -105,13 +105,13 @@ is-hidden">
           </div>
 
        <div class="pose-guide__label" id="pose-guide-message">
-  <span>Gira ligeramente la cabeza y alinea el lóbulo con la guía</span>
+  <span>Turn your head slightly and align your earlobe with the guide</span>
 
   <button
     id="pose-guide-dismiss"
     class="pose-guide__dismiss"
     type="button"
-    aria-label="Cerrar ayuda"
+    aria-label="Dismiss guide"
   >
     ×
   </button>
@@ -136,7 +136,7 @@ is-hidden">
     <div
       id="variant-selector"
       class="variant-selector"
-      aria-label="Seleccionar pendiente"
+      aria-label="Select an earring"
     ></div>
 
     <footer class="camera-modal__footer">
@@ -145,14 +145,14 @@ is-hidden">
         class="button button--primary"
         type="button"
       >
-        Activar cámara
+        Enable camera
       </button>
 
       <button
         id="capture-photo-button"
         class="capture-button is-hidden"
         type="button"
-        aria-label="Hacer foto"
+        aria-label="Take photo"
       >
         <span class="capture-button__outer">
           <span class="capture-button__inner"></span>
@@ -163,7 +163,7 @@ is-hidden">
   id="retake-photo-button"
   class="secondary-icon-button is-hidden"
   type="button"
-  aria-label="Repetir foto"
+  aria-label="Retake photo"
 >
   <span aria-hidden="true">↺</span>
 </button>
@@ -304,7 +304,7 @@ function startGuideTracking() {
           setActiveGuidedEarSide(detectedSide);
         }
       } catch (error) {
-        // Durante el preview puede haber frames no listos. No bloqueamos la UX.
+        // Some preview frames may not be ready; keep the UI responsive.
       }
     }
 
@@ -412,7 +412,7 @@ function renderVariantSelector() {
           class="variant-selector__item${isSelected ? " is-selected" : ""}"
           type="button"
           data-variant-id="${variant.id}"
-          aria-label="Seleccionar ${variant.name}"
+          aria-label="Select ${variant.name}"
           aria-pressed="${isSelected}"
         >
         <img
@@ -471,7 +471,7 @@ function closeCameraModal() {
   resetCaptureState();
 
   startCameraButton.disabled = false;
-  startCameraButton.textContent = "Activar cámara";
+  startCameraButton.textContent = "Enable camera";
 
   cameraModal.classList.remove("is-open");
   cameraModal.setAttribute("aria-hidden", "true");
@@ -485,23 +485,23 @@ async function startCamera() {
   try {
     showCameraLoading();
     startCameraButton.disabled = true;
-    startCameraButton.textContent = "Activando...";
+    startCameraButton.textContent = "Starting...";
 
-    setCameraStatus("Solicitando acceso a la cámara...");
+    setCameraStatus("Requesting camera access...");
 
     await cameraController.start();
 
-    setCameraStatus("Preparando análisis facial...");
+    setCameraStatus("Preparing face tracking...");
 
     await faceAnalyzer.initialize();
 
     hideCameraPlaceholder();
     showLiveCameraState();
 hideCameraLoading();
-    startCameraButton.textContent = "Cámara activa";
+    startCameraButton.textContent = "Camera ready";
 
     setCameraStatus(
-      "Alinea el lóbulo con el punto y busca buena iluminación.",
+      "Align your earlobe with the guide and use good lighting.",
       "success",
     );
   } catch (error) {
@@ -511,11 +511,11 @@ hideCameraLoading();
     showCameraPlaceholder();
 
     startCameraButton.disabled = false;
-    startCameraButton.textContent = "Activar cámara";
+    startCameraButton.textContent = "Enable camera";
 
     if (error.name === "NotAllowedError") {
       setCameraStatus(
-        "No has permitido el acceso a la cámara. Revisa los permisos del navegador.",
+        "Camera access was denied. Check your browser permissions.",
         "error",
       );
 
@@ -524,7 +524,7 @@ hideCameraLoading();
 
     if (error.message === "MEDIA_DEVICES_UNSUPPORTED") {
       setCameraStatus(
-        "Este navegador no permite acceder a la cámara desde esta página.",
+        "This browser cannot access the camera on this page.",
         "error",
       );
 
@@ -532,7 +532,7 @@ hideCameraLoading();
     }
 
     setCameraStatus(
-      "No se ha podido activar la cámara. Prueba con otro navegador o dispositivo.",
+      "Couldn't start the camera. Try another browser or device.",
       "error",
     );
   }
@@ -540,7 +540,7 @@ hideCameraLoading();
 
 async function capturePhoto() {
   if (!cameraController.isActive) {
-    setCameraStatus("Activa la cámara antes de hacer la foto.", "error");
+    setCameraStatus("Enable the camera before taking a photo.", "error");
     return;
   }
 
@@ -557,7 +557,7 @@ async function capturePhoto() {
       hideEarringCanvas();
 
       setCameraStatus(
-        "No se ha detectado ningún rostro. Repite la foto con más luz.",
+        "No face detected. Retake the photo in better lighting.",
         "error",
       );
 
@@ -612,7 +612,7 @@ const visibleEarAnchor =
 
     if (!visibleEarAnchor) {
       setCameraStatus(
-        "No se ha podido calcular la posición del pendiente. Repite la foto.",
+        "Couldn't determine the earring position. Please retake the photo.",
         "error",
       );
 
@@ -651,13 +651,13 @@ const visibleEarAnchor =
     await renderSelectedEarringOnCapture();
 
     setCameraStatus(
-      "Pendiente colocado. Puedes repetir la foto si quieres probar la otra oreja o una nueva posición.",
+      "Earring placed. Retake the photo to try the other ear or a different position.",
       "success",
     );
   } catch (error) {
     if (error.message === "VIDEO_NOT_READY") {
       setCameraStatus(
-        "La cámara todavía no está lista. Inténtalo de nuevo.",
+        "The camera isn't ready yet. Please try again.",
         "error",
       );
 
@@ -666,7 +666,7 @@ const visibleEarAnchor =
 
     if (error.message === "FACE_ANALYZER_NOT_READY") {
       setCameraStatus(
-        "El análisis facial todavía no está listo. Espera un momento e inténtalo de nuevo.",
+        "Face tracking isn't ready yet. Please try again shortly.",
         "error",
       );
 
@@ -676,7 +676,7 @@ const visibleEarAnchor =
     console.error(error);
 
     setCameraStatus(
-      "No se ha podido capturar la foto. Inténtalo de nuevo.",
+      "Couldn't take the photo. Please try again.",
       "error",
     );
   }
@@ -699,7 +699,7 @@ hideCameraPlaceholder();
 showLiveCameraState();
 
   setCameraStatus(
-    "Alinea el lóbulo con el punto y busca buena iluminación.",
+    "Align your earlobe with the guide and use good lighting.",
     "success",
   );
 }

@@ -13,14 +13,14 @@ export const EARRING_TYPES = {
 export const EARRING_PRODUCTS = [
   {
     id: "stone-stud",
-    name: "Pendiente piedra",
+    name: "Gemstone stud earrings",
     type: EARRING_TYPES.STUD,
     anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_CENTER,
 
     variants: [
       {
         id: "stud-blue",
-        name: "Azul",
+        name: "Blue",
         imageUrl: "/earrings/stud-blue.png",
         type: EARRING_TYPES.STUD,
         anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_CENTER,
@@ -56,7 +56,7 @@ export const EARRING_PRODUCTS = [
 
       {
         id: "stud-red",
-        name: "Rojo",
+        name: "Red",
         imageUrl: "/earrings/stud-red.png",
         type: EARRING_TYPES.STUD,
         anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_CENTER,
@@ -94,14 +94,14 @@ export const EARRING_PRODUCTS = [
 
   {
     id: "chain-gold",
-    name: "Pendiente cadena",
+    name: "Chain earrings",
     type: EARRING_TYPES.CHAIN,
     anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_DROP,
 
     variants: [
       {
         id: "chain-gold",
-        name: "Cadena",
+        name: "Chain",
         imageUrl: "/earrings/chain-gold.png",
         type: EARRING_TYPES.CHAIN,
         anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_DROP,
@@ -139,14 +139,14 @@ export const EARRING_PRODUCTS = [
 /* 
   {
     id: "gold-hoop",
-    name: "Aro dorado",
+    name: "Gold hoop",
     type: EARRING_TYPES.HOOP,
     anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_HOOP,
 
     variants: [
       {
         id: "hoop-gold",
-        name: "Aro Dorado",
+        name: "Gold hoop",
         imageUrl: "/earrings/hoop-gold.png",
         type: EARRING_TYPES.HOOP,
         anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_HOOP,
@@ -218,14 +218,14 @@ layers: [
 
 {
   id: "earring-drop",
-  name: "Pendiente colgante",
+  name: "Drop earrings",
   type: EARRING_TYPES.CHAIN,
   anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_DROP,
 
   variants: [
     {
       id: "earring1",
-      name: "Colgante",
+      name: "Drop",
       imageUrl: "/earrings/earring1.png",
       type: EARRING_TYPES.CHAIN,
       anchorPreset: EARRING_ANCHOR_PRESETS.LOBE_DROP,

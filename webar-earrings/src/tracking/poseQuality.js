@@ -23,7 +23,7 @@ export function evaluatePoseQuality(landmarks, options = {}) {
     return {
       isValid: false,
       reason: "NO_LANDMARKS",
-      message: "No se ha detectado bien el rostro.",
+      message: "Face not detected clearly.",
       metrics: null,
     };
   }
@@ -38,7 +38,7 @@ export function evaluatePoseQuality(landmarks, options = {}) {
     return {
       isValid: false,
       reason: "MISSING_REFERENCE_LANDMARKS",
-      message: "No se ha detectado bien el rostro.",
+      message: "Face not detected clearly.",
       metrics: null,
     };
   }
@@ -49,7 +49,7 @@ export function evaluatePoseQuality(landmarks, options = {}) {
     return {
       isValid: false,
       reason: "FACE_TOO_SMALL",
-      message: "Acércate un poco más.",
+      message: "Move a little closer.",
       metrics: {
         faceWidth,
         noseRelativeX: null,
@@ -64,7 +64,7 @@ export function evaluatePoseQuality(landmarks, options = {}) {
     return {
       isValid: false,
       reason: "TURN_MORE",
-      message: "Gira un poco más la cabeza.",
+      message: "Turn your head a little further.",
       metrics: {
         faceWidth,
         noseRelativeX,
@@ -76,7 +76,7 @@ export function evaluatePoseQuality(landmarks, options = {}) {
     return {
       isValid: false,
       reason: "TURN_LESS",
-      message: "Gira un poco menos la cabeza.",
+      message: "Turn your head back slightly.",
       metrics: {
         faceWidth,
         noseRelativeX,
