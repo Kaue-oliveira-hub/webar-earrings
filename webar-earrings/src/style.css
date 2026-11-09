@@ -404,8 +404,9 @@ h1 {
   overflow-x: auto;
   scrollbar-width: none;
 
-  background: rgba(0, 0, 0, 0.42);
-  backdrop-filter: blur(18px);
+  background: rgba(0, 0, 0, 0.18);
+  backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
 }
 
 .variant-selector::-webkit-scrollbar {
@@ -433,8 +434,8 @@ h1 {
 }
 
 .variant-selector__item.is-selected {
-  border: 3px solid #151515;
-  box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.24);
+  border: 3px solid #7dd3fc;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.24);
 }
 
 .variant-selector__image {
@@ -645,8 +646,9 @@ h1 {
   overflow-x: auto;
   scrollbar-width: none;
 
-  background: rgba(0, 0, 0, 0.46);
-  backdrop-filter: blur(18px);
+  background: rgba(0, 0, 0, 0.18);
+backdrop-filter: blur(14px);
+-webkit-backdrop-filter: blur(14px);
   }
 
   .variant-selector__item {
